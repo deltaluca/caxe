@@ -1,0 +1,272 @@
+//for c++ hllr
+
+//must match order in .hlx
+%token IDENT STRING REGEXP INTEGER FLOATER
+%token MSCOPE MBRACK
+%token LBRACE RBRACE LPAREN RPAREN COMMA
+%token DOT SEMI ARROW SLASH DOLL
+%token CONS
+%token PACKAGE IMPORT DEFINE MIXIN EXPAND STR
+%token GLOBAL FILE LOCAL OBJECT METHOD
+%token NOISE
+
+%{
+    #include "parser_obj.hpp"
+
+    struct RMIXIN {
+        std::string x;
+        std::vector<std::string> y;
+        std::vector<ptr<State>> z;
+
+        RMIXIN() {}
+        RMIXIN(const std::string& x, const std::vector<std::string>& y, const std::vector<ptr<State>>& z) {
+            this->x = x;
+            this->y = y;
+            this->z = z;
+        }
+        RMIXIN(const std::string& x, const std::vector<ptr<State>>& z) {
+            this->x = x;
+            this->z = z;
+        }
+
+        Dynamic build(const MSCOPE& scope) {
+            return StateMixin(dMacro(scope,x,y,z));
+        }
+    };
+
+    #define States std::vector<ptr<State>>
+%}
+
+%entry file
+
+%file
+    : restex PACKAGE SEMI restex %{
+        States& x = (States&)%0;
+        States& y = (States&)%3;
+        for(auto i = y.begin(); i!=y.end(); i++) x.push_back(*i);
+        retval = Program("",x);
+    %}
+    | restex PACKAGE qname SEMI restex %{
+        retval = Program((std::string&)%2,(States&)%4);
+    %}
+    | restex %{
+        retval = Program("",(States&)%0);
+    %}
+;
+
+%qname
+    : qname DOT IDENT %{
+        std::string& x = (std::string&) %0;
+        x.append(".");
+//        x.append((std::string)%2);
+	x.append(%2.cast<std::string>());
+        retval = %0;
+    %}
+    | IDENT %{
+        retval = %0;
+    %}
+;
+
+%rest
+    : rest state %{
+        States& x = (States&)%0;
+        x.push_back(ptr<State>(%1));
+        retval = %0;
+    %}
+    | %{
+        retval = States();
+    %}
+;
+
+%restex
+    : restex stateex %{
+        States& x = (States&) %0;
+        x.push_back(ptr<State>(%1));
+        retval = %0;
+    %}
+    | %{
+        retval = States();
+    %}
+;
+
+%state
+    : NOISE %{ retval = StateNoise((std::string&)%0); %}
+    | IDENT %{ retval = StateIdent((std::string&)%0); %}
+    | CONS  %{ retval = StateCons(); %}
+    | DOT   %{ retval = StateNoise("."); %}
+    | SEMI  %{ retval = StateNoise(";"); %}
+    | SLASH %{ retval = StateNoise("/"); %}
+    | ARROW %{ retval = StateNoise("->"); %}
+
+    | DOLL %{ retval = StateNoise("$"); %}
+    | DOLL IDENT %{
+        States list;
+        list.push_back(ptr<State>(StateIdent((std::string&)%1)));
+        retval = StateMBrack(dMScopeBrack(list));
+    %}
+    | DOLL STR LPAREN restex RPAREN %{
+        retval = StateString(ptr<State>(new StateArgScope((States&)%3)));
+    %}
+
+    | STRING  %{ retval = StateDatum((std::string&)%0); %}
+    | REGEXP  %{ retval = StateDatum((std::string&)%0); %}
+    | INTEGER %{ retval = StateNumber((std::string&)%0); %}
+    | FLOATER %{ retval = StateNumber((std::string&)%0); %}
+
+    | IMPORT qname semi %{ retval = StateImport((std::string&)%1); %}
+
+    | LBRACE restex RBRACE %{ retval = StateScope((States&)%1); %}
+    | MSCOPE mscopeix ARROW restex RBRACE %{
+        retval = StateMScope(dMScopeBrack((std::vector<MIdent>&)%1, (States&)%3));
+    %}
+    | MBRACK mscopeix ARROW restex RPAREN %{
+        retval = StateMBrack(dMScopeBrack((std::vector<MIdent>&)%1, (States&)%3));
+    %}
+
+    | LOCAL  %{ retval = StateIdent("local"); %}
+    | GLOBAL %{ retval = StateIdent("global"); %}
+    | FILE   %{ retval = StateIdent("file"); %}
+    | OBJECT %{ retval = StateIdent("object"); %}
+    | METHOD %{ retval = StateIdent("method"); %}
+    | MIXIN  %{ retval = StateIdent("mixin"); %}
+    | DEFINE %{ retval = StateIdent("define"); %}
+    | EXPAND %{ retval = StateIdent("expand"); %}
+    | STR    %{ retval = StateIdent("str"); %}
+
+    | LPAREN args RPAREN %{ retval = StateCall((States&)%1); %}
+
+    | mimport RPAREN semi %{ retval = StateMImport(dMImport("")); %}
+    | mimport qname RPAREN semi %{ retval = StateMImport(dMImport((std::string&)%1)); %}
+
+    | mdefine access pre LPAREN eargs RPAREN restex RPAREN semi %{
+        States& pre = (States&) %2;
+        ptr<State> x = pre.back(); pre.pop_back();
+        std::string& name = ptr<StateIdent>(x)->data;
+        retval = StateDefine(dMacro((MSCOPE&)%1,pre,name,(std::vector<std::string>&)%4, (States&)%6));
+    %}
+    | mdefine pre LPAREN eargs RPAREN restex RPAREN semi %{
+        States& pre = (States&) %1;
+        ptr<State> x = pre.back(); pre.pop_back();
+        std::string& name = ptr<StateIdent>(x)->data;
+        retval = StateDefine(dMacro(sLocal,pre,name,(std::vector<std::string>&)%3, (States&)%5));
+    %}
+
+
+    | MBRACK EXPAND access IDENT LPAREN eargs RPAREN restex RPAREN semi %{
+        retval = StateExpand(dMacro((MSCOPE&)%2, (std::string&)%3, (std::vector<std::string>&)%5, (States&)%7));
+    %}
+
+    | MBRACK MIXIN access rmixin %{
+        RMIXIN& x = (RMIXIN&)%3;
+        retval = x.build((MSCOPE&)%2);
+    %}
+;
+
+%stateex
+    : state %{ retval = %0; %}
+    | COMMA %{ retval = StateNoise(","); %}
+;
+
+%mimport : MBRACK IMPORT %{%};
+%mdefine : MBRACK DEFINE %{%};
+
+%semi : SEMI %{%} | %{%} ;
+
+%mscopeix
+    : mscopeix COMMA mscopei %{
+        std::vector<MIdent>& x = (std::vector<MIdent>&)%0;
+        x.push_back((MIdent&)%2);
+        retval = %0;
+    %}
+    | mscopei %{
+        std::vector<MIdent> x;
+        x.push_back((MIdent&)%0);
+        retval = x;
+    %}
+    | %{ retval = std::vector<MIdent>(); %}
+;
+
+%mscopei
+    : IDENT %{ retval = MIdent((std::string&)%0,0); %}
+    | IDENT SLASH INTEGER %{
+        retval = MIdent((std::string&)%0, atoi(((std::string&)%2).c_str()));
+    %}
+;
+
+%args
+    : %{ retval = States(); %}
+    | args2 %{ retval = %0; %}
+;
+
+%args2
+    : args2 COMMA rest %{
+        States& x = (States&) %0;
+        x.push_back(ptr<State>(StateArgScope((States&)%2)));
+        retval = %0;
+    %}
+    | rest %{
+        States x;
+        x.push_back(ptr<State>(StateArgScope((States&)%0)));
+        retval = x;
+    %}
+;
+
+%eargs
+    : %{ retval = States(); %}
+    | eargs2 %{ retval = %0; %}
+;
+
+%eargs2
+    : eargs2 COMMA IDENT %{
+        std::vector<std::string>& x = (std::vector<std::string>&)%0;
+        x.push_back((std::string&)%2);
+        retval = %0;
+    %}
+    | IDENT %{
+        std::vector<std::string> x;
+        x.push_back((std::string&)%0);
+        retval = x;
+    %}
+;
+
+%access
+    : %{ retval = sLocal; %}
+    | LOCAL  %{ retval = sLocal;  %}
+    | GLOBAL %{ retval = sGlobal; %}
+    | FILE   %{ retval = sFile;   %}
+    | OBJECT %{ retval = sObject; %}
+    | METHOD %{ retval = sMethod; %}
+;
+
+%pre
+    : IDENT %{
+        States x;
+        x.push_back(ptr<State>(StateIdent((std::string&)%0)));
+        retval = x;
+    %}
+    | NOISE %{
+        States x;
+        x.push_back(ptr<State>(StateNoise((std::string&)%0)));
+        retval = x;
+    %}
+    | pre NOISE %{
+        States& x = (States&) %0;
+        x.push_back(ptr<State>(StateNoise((std::string&)%1)));
+        retval = %0;
+    %}
+    | pre IDENT %{
+        States& x = (States&) %0;
+        x.push_back(ptr<State>(StateIdent((std::string&)%1)));
+        retval = %0;
+    %}
+;
+
+%rmixin
+    : IDENT LPAREN eargs RPAREN restex RPAREN semi %{
+        retval = RMIXIN((std::string&)%0, (std::vector<std::string>&)%2, (States&)%4);
+    %}
+    | IDENT restex RPAREN semi %{
+        retval = RMIXIN((std::string&)%0, (States&)%1);
+    %}
+;
+
