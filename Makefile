@@ -37,10 +37,12 @@ caxe: $(OBJS)
 	@echo "-------------"
 	@echo "linking caxe"
 	@echo "-------------"
+	mkdir -p $(BIN)
 	$(CXX) $(OBJS) -o $(BIN)/$(EXEC) $(LFLAGS)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	@echo "compiling " $@
+	mkdir -p $(OBJ)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:

@@ -20,8 +20,20 @@ int _threadcnt = 4;
 
 int main(int argc, char* argv[]) {
     if(argc<2) {
-        std::cout << "Usage:\n\tcaxe [in_dir]+ [-o out_dir] [-tc thread_count] [--times]\n";
+        std::cout << "For help use --help option\n";
         return 1;
+    }
+    
+    if(std::string(argv[1]).compare("--help")==0) {
+        std::cout << "Usage: caxe [in_dir]+ [options...]\n";
+        std::cout << "Options:\n";
+        std::cout << "\t-o out_dir\n";
+        std::cout << "\t\tproduce output in given directory\n";
+        std::cout << "\t-tc thread_count\n";
+        std::cout << "\t\tuse `thread_count` number of threads for preprocessing\n";
+        std::cout << "\t--times\n";
+        std::cout << "\t\tproduce benchmarking results in stdout\n";
+        return 0;
     }
 
     //-----------------------------------------------------------------
