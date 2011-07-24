@@ -15,8 +15,39 @@ OBJ = obj
 BIN = bin
 EXEC = caxe
 
-CXX = g++
-CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
+CXX = g++-4.6
+CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL) \
+  -falign-functions\
+  -falign-jumps\
+  -falign-labels\
+  -falign-loops\
+  -fdefer-pop\
+  -fdelete-null-pointer-checks\
+  -fexpensive-optimizations\
+  -fguess-branch-probability\
+  -fjump-tables\
+  -fmerge-all-constants\
+  -fmodulo-sched\
+  -fmove-loop-invariants\
+  -fnon-call-exceptions\
+  -fpeel-loops\
+  -fpeephole2\
+  -foptimize-register-move\
+  -fomit-frame-pointer\
+  -fprefetch-loop-arrays\
+  -freorder-blocks-and-partition\
+  -fthread-jumps\
+  -ftree-copyrename\
+  -ftree-dominator-opts\
+  -ftree-loop-optimize\
+  -ftree-lrs\
+  -ftree-loop-distribution\
+  -funsafe-loop-optimizations\
+  -funsafe-math-optimizations\
+  -funswitch-loops\
+  -funwind-tables\
+  -fvpt\
+  -funroll-all-loops
 LFLAGS = -lpthread
 
 _OBJS = main.o \
