@@ -16,7 +16,7 @@
 #include <vector>
 #include <iostream>
 
-int _threadcnt = 4;
+int _threadcnt = 1;
 
 int main(int argc, char* argv[]) {
     if(argc<2) {

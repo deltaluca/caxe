@@ -16,8 +16,18 @@ BIN = bin
 EXEC = caxe
 
 CXX = g++-4.6
-CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL) \
-  -falign-functions\
+CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
+OP = -Ofast \
+  -fmerge-all-constants \
+  -fmodulo-sched \
+  -fmodulo-sched-allow-regmoves \
+  -fno-branch-count-reg \
+  -fgcse-lm -fgcse-sm \
+  -fgcse-after-reload \
+  -funsafe-loop-optimizations -Wunsafe-loop-optimizations \
+  
+# lexer.cpp doesn't compile with even -O1
+LEXEROP = -falign-functions\
   -falign-jumps\
   -falign-labels\
   -falign-loops\
@@ -53,7 +63,6 @@ LFLAGS = -lpthread
 _OBJS = main.o \
 	anal.o \
 	imports.o \
-	lexer.o \
 	macro.o \
 	parser_obj.o \
 	parse.o \
@@ -64,17 +73,22 @@ _OBJS = main.o \
 
 OBJS= $(_OBJS:%.o=$(OBJ)/%.o)
 
-caxe: $(OBJS)
+caxe: $(OBJS) $(OBJ)/lexer.o
 	@echo "-------------"
 	@echo "linking caxe"
 	@echo "-------------"
 	mkdir -p $(BIN)
-	$(CXX) $(OBJS) -o $(BIN)/$(EXEC) $(LFLAGS)
+	$(CXX) $(OBJS) $(OBJ)/lexer.o -o $(BIN)/$(EXEC) $(LFLAGS)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	@echo "compiling " $@
 	mkdir -p $(OBJ)
-	$(CXX) $(CXXFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o $@ $(OP)
+
+$(OBJ)/lexer.o: $(SRC)/lexer.cpp
+	@echo "compiling lexer.cpp"
+	mkdir -p $(OBJ)
+	$(CXX) $(CXXFLAGS) $(SRC)/lexer.cpp -o $(OBJ)/lexer.o $(LEXEROP)
 
 clean:
 	@echo "-------------"
