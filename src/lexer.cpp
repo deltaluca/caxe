@@ -6,6 +6,8 @@
 #include <iostream>
 #include <caxe_util.hpp>
 
+    #include <parser_obj.hpp>
+
 TOKEN::TOKEN() {}
 TOKEN::TOKEN(char id) { this->id = id; }
 TOKEN::TOKEN(char id, const Dynamic& data) { this->id = id; this->data = data; }
@@ -28,7 +30,7 @@ struct Transition {
 };
 ptr<TOKEN> token_ident(const std::string& valstr) {
 	Dynamic retval;
-	 retval =  valstr ; 	return ptr<TOKEN>(new TOKEN(0,retval));
+	 retval = GetSymbol( valstr ); 	return ptr<TOKEN>(new TOKEN(0,retval));
 }
 ptr<TOKEN> token_string(const std::string& valstr) {
 	Dynamic retval;

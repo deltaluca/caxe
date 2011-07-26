@@ -44,10 +44,14 @@ static ptr<Macro> half_clone(ptr<Macro> m) {
 
     for(auto i = m->preamble.begin(); i!=m->preamble.end(); i++) {
         ptr<State> x = *i;
-        if(x->id==sIdent) {
+        if(x->id==sSymbol) {
+            StateSymbol& y = (StateSymbol&) *x;
+            ret->preamble.push_back(ptr<State>(new StateSymbol(y.data)));
+        }else 
+        /*if(x->id==sIdent) {
             StateIdent& y = (StateIdent&) *x;
             ret->preamble.push_back(ptr<State>(new StateIdent(y.data)));
-        }else {
+        }else */{
             StateNoise& y = (StateNoise&) *x;
             ret->preamble.push_back(ptr<State>(new StateNoise(y.data)));
         }
@@ -78,10 +82,14 @@ static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vecto
                 }
             }else
                 ret.push_back(x);
-        }else if(x->id==sIdent) {
+        }else if(x->id==sSymbol) {
             //copy it incase concatenation operators modify value later!.
-            ret.push_back(ptr<State>(new StateIdent(((StateIdent&)*x).data)));
-        }else if(x->id==sDatum) {
+            ret.push_back(ptr<State>(new StateSymbol(((StateSymbol&)*x).data)));
+        }else 
+        //else if(x->id==sIdent) {
+            //copy it incase concatenation operators modify value later!.
+            //ret.push_back(ptr<State>(new StateIdent(((StateIdent&)*x).data)));
+        /*}else */if(x->id==sDatum) {
             ret.push_back(x);
         }else if(x->id==sNumber) {
             ret.push_back(x);
@@ -176,29 +184,30 @@ std::vector<ptr<State>> Macro::instantiate(ptr<Macro> self, const std::vector<pt
         writer::spaces = true;
         writelock.release();
 
-        std::string key = self->name+"_"+str.str();
-        for(unsigned int i = 0; i<key.length(); i++) {
-            char c = key[i];
-            if(c<=32) key.erase(i,1);
-            else if(!((c>=48&&c<=57)||(c>=65&&c<=90)||(c>=97&&c<=122))) key.replace(i,1,"_");
+        std::string skey = GetSymbol(self->name)+"_"+str.str();
+        for(unsigned int i = 0; i<skey.length(); i++) {
+            char c = skey[i];
+            if(c<=32) skey.erase(i,1);
+            else if(!((c>=48&&c<=57)||(c>=65&&c<=90)||(c>=97&&c<=122))) skey.replace(i,1,"_");
         }
+        int key = GetSymbol(skey);
 
         self->instlock.acquire();
         if(self->instances.find(key)==self->instances.end()) {
-            std::vector<ptr<State>>& list = self->instances.insert(std::pair<std::string,std::vector<ptr<State>>>(key,std::vector<ptr<State>>())).first->second;
+            std::vector<ptr<State>>& list = self->instances.insert(std::pair</*Symbol*/int,std::vector<ptr<State>>>(key,std::vector<ptr<State>>())).first->second;
             self->instlock.release();
 
             std::vector<ptr<State>> inx;
             if(self->type == mDefine) {
                 inst(self, inx, self->preamble, args, self->scope);
-                inx.push_back(ptr<State>(new StateIdent(key)));
+                inx.push_back(ptr<State>(new StateSymbol(key)));
             }
             inst(self, inx, self->scope->data,args,self->scope);
             subs_data(list,inx,Scope::macros_in_scope(self->scope));
         }else
             self->instlock.release();
 
-        if(self->type==mDefine) ret.push_back(ptr<State>(new StateIdent(key)));
+        if(self->type==mDefine) ret.push_back(ptr<State>(new StateSymbol(key)));
     }
     return ret;
 }

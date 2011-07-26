@@ -1,20 +1,20 @@
 #include <parse.hpp>
 #include <vector>
 
-    #include "parser_obj.hpp"
+    #include <parser_obj.hpp>
 
     struct RMIXIN {
-        std::string x;
-        std::vector<std::string> y;
+        /*Symbol*/int x;
+        std::vector</*Symbol*/int> y;
         std::vector<ptr<State>> z;
 
         RMIXIN() {}
-        RMIXIN(const std::string& x, const std::vector<std::string>& y, const std::vector<ptr<State>>& z) {
+        RMIXIN(/*Symbol*/int x, const std::vector</*Symbol*/int>& y, const std::vector<ptr<State>>& z) {
             this->x = x;
             this->y = y;
             this->z = z;
         }
-        RMIXIN(const std::string& x, const std::vector<ptr<State>>& z) {
+        RMIXIN(/*Symbol*/int x, const std::vector<ptr<State>>& z) {
             this->x = x;
             this->z = z;
         }
@@ -80,10 +80,10 @@ void R3(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        std::string& x = (std::string&) hllr__0;
+        std::string& x = (std::string&)hllr__0;
         x.append(".");
 //        x.append((std::string)(ptr<TOKEN>(hllr__2)->data));
-	x.append((ptr<TOKEN>(hllr__2)->data).cast<std::string>());
+	x.append(GetSymbol((ptr<TOKEN>(hllr__2)->data).cast<int>()));
         retval = hllr__0;
     
 	__ret.push_back(retval);
@@ -93,7 +93,7 @@ void R4(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        retval = (ptr<TOKEN>(hllr__0)->data);
+        retval = GetSymbol((ptr<TOKEN>(hllr__0)->data).cast<int>());
     
 	__ret.push_back(retval);
 }
@@ -148,7 +148,7 @@ void R10(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent((std::string&)(ptr<TOKEN>(hllr__0)->data)); 
+ retval = StateSymbol((ptr<TOKEN>(hllr__0)->data).cast<int>()); 
 	__ret.push_back(retval);
 }
 void R11(std::vector<Dynamic>& __ret) {
@@ -200,7 +200,7 @@ void R17(std::vector<Dynamic>& __ret) {
 	Dynamic retval;
 
         States list;
-        list.push_back(ptr<State>(StateIdent((std::string&)(ptr<TOKEN>(hllr__1)->data))));
+        list.push_back(ptr<State>(StateSymbol((ptr<TOKEN>(hllr__1)->data).cast<int>())));
         retval = StateMBrack(dMScopeBrack(list));
     
 	__ret.push_back(retval);
@@ -294,63 +294,63 @@ void R27(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("local"); 
+ retval = StateSymbol(GetSymbol("local")); 
 	__ret.push_back(retval);
 }
 void R28(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("global"); 
+ retval = StateSymbol(GetSymbol("global")); 
 	__ret.push_back(retval);
 }
 void R29(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("file"); 
+ retval = StateSymbol(GetSymbol("file")); 
 	__ret.push_back(retval);
 }
 void R30(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("object"); 
+ retval = StateSymbol(GetSymbol("object")); 
 	__ret.push_back(retval);
 }
 void R31(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("method"); 
+ retval = StateSymbol(GetSymbol("method")); 
 	__ret.push_back(retval);
 }
 void R32(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("mixin"); 
+ retval = StateSymbol(GetSymbol("mixin")); 
 	__ret.push_back(retval);
 }
 void R33(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("define"); 
+ retval = StateSymbol(GetSymbol("define")); 
 	__ret.push_back(retval);
 }
 void R34(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("expand"); 
+ retval = StateSymbol(GetSymbol("expand")); 
 	__ret.push_back(retval);
 }
 void R35(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = StateIdent("str"); 
+ retval = StateSymbol(GetSymbol("str")); 
 	__ret.push_back(retval);
 }
 void R36(std::vector<Dynamic>& __ret) {
@@ -396,8 +396,8 @@ void R39(std::vector<Dynamic>& __ret) {
 
         States& pre = (States&) hllr__2;
         ptr<State> x = pre.back(); pre.pop_back();
-        std::string& name = ptr<StateIdent>(x)->data;
-        retval = StateDefine(dMacro((MSCOPE&)hllr__1,pre,name,(std::vector<std::string>&)hllr__4, (States&)hllr__6));
+        int name = ptr<StateSymbol>(x)->data;
+        retval = StateDefine(dMacro((MSCOPE&)hllr__1,pre,name,(std::vector</*Symbol*/int>&)hllr__4, (States&)hllr__6));
     
 	__ret.push_back(retval);
 }
@@ -415,8 +415,8 @@ void R40(std::vector<Dynamic>& __ret) {
 
         States& pre = (States&) hllr__1;
         ptr<State> x = pre.back(); pre.pop_back();
-        std::string& name = ptr<StateIdent>(x)->data;
-        retval = StateDefine(dMacro(sLocal,pre,name,(std::vector<std::string>&)hllr__3, (States&)hllr__5));
+        int name = ptr<StateSymbol>(x)->data;
+        retval = StateDefine(dMacro(sLocal,pre,name,(std::vector</*Symbol*/int>&)hllr__3, (States&)hllr__5));
     
 	__ret.push_back(retval);
 }
@@ -434,7 +434,7 @@ void R41(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        retval = StateExpand(dMacro((MSCOPE&)hllr__2, (std::string&)(ptr<TOKEN>(hllr__3)->data), (std::vector<std::string>&)hllr__5, (States&)hllr__7));
+        retval = StateExpand(dMacro((MSCOPE&)hllr__2, (ptr<TOKEN>(hllr__3)->data).cast<int>(), (std::vector</*Symbol*/int>&)hllr__5, (States&)hllr__7));
     
 	__ret.push_back(retval);
 }
@@ -528,7 +528,7 @@ void R52(std::vector<Dynamic>& __ret) {
 	//arguments
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
- retval = MIdent((std::string&)(ptr<TOKEN>(hllr__0)->data),0); 
+ retval = MIdent((ptr<TOKEN>(hllr__0)->data).cast<int>(),0); 
 	__ret.push_back(retval);
 }
 void R53(std::vector<Dynamic>& __ret) {
@@ -538,7 +538,7 @@ void R53(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        retval = MIdent((std::string&)(ptr<TOKEN>(hllr__0)->data), atoi(((std::string&)(ptr<TOKEN>(hllr__2)->data)).c_str()));
+        retval = MIdent((ptr<TOKEN>(hllr__0)->data).cast<int>(), atoi(((std::string&)(ptr<TOKEN>(hllr__2)->data)).c_str()));
     
 	__ret.push_back(retval);
 }
@@ -599,8 +599,8 @@ void R60(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        std::vector<std::string>& x = (std::vector<std::string>&)hllr__0;
-        x.push_back((std::string&)(ptr<TOKEN>(hllr__2)->data));
+        std::vector<int>& x = (std::vector<int>&)hllr__0;
+        x.push_back((ptr<TOKEN>(hllr__2)->data).cast<int>());
         retval = hllr__0;
     
 	__ret.push_back(retval);
@@ -610,8 +610,8 @@ void R61(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        std::vector<std::string> x;
-        x.push_back((std::string&)(ptr<TOKEN>(hllr__0)->data));
+        std::vector<int> x;
+        x.push_back((ptr<TOKEN>(hllr__0)->data).cast<int>());
         retval = x;
     
 	__ret.push_back(retval);
@@ -663,7 +663,7 @@ void R68(std::vector<Dynamic>& __ret) {
 	Dynamic retval;
 
         States x;
-        x.push_back(ptr<State>(StateIdent((std::string&)(ptr<TOKEN>(hllr__0)->data))));
+        x.push_back(ptr<State>(StateSymbol((ptr<TOKEN>(hllr__0)->data).cast<int>())));
         retval = x;
     
 	__ret.push_back(retval);
@@ -698,7 +698,7 @@ void R71(std::vector<Dynamic>& __ret) {
 	Dynamic retval;
 
         States& x = (States&) hllr__0;
-        x.push_back(ptr<State>(StateIdent((std::string&)(ptr<TOKEN>(hllr__1)->data))));
+        x.push_back(ptr<State>(StateSymbol((ptr<TOKEN>(hllr__1)->data).cast<int>())));
         retval = hllr__0;
     
 	__ret.push_back(retval);
@@ -714,7 +714,7 @@ void R72(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        retval = RMIXIN((std::string&)(ptr<TOKEN>(hllr__0)->data), (std::vector<std::string>&)hllr__2, (States&)hllr__4);
+        retval = RMIXIN((ptr<TOKEN>(hllr__0)->data).cast<int>(), (std::vector<int>&)hllr__2, (States&)hllr__4);
     
 	__ret.push_back(retval);
 }
@@ -726,7 +726,7 @@ void R73(std::vector<Dynamic>& __ret) {
 	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
 	Dynamic retval;
 
-        retval = RMIXIN((std::string&)(ptr<TOKEN>(hllr__0)->data), (States&)hllr__1);
+        retval = RMIXIN((ptr<TOKEN>(hllr__0)->data).cast<int>(), (States&)hllr__1);
     
 	__ret.push_back(retval);
 }

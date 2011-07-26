@@ -28,11 +28,11 @@ struct Macro {
     std::vector<ptr<State>> preamble;
     ptr<Scope> scope;
 
-    std::string name;
+    /*Symbol*/int name;
     int argc;
 
     Mutex instlock;
-    std::map<std::string,std::vector<ptr<State>>> instances;
+    std::map</*Symbol*/int,std::vector<ptr<State>>> instances;
 
     ptr<Scope> parent;
     ptr<Scope> owner;

@@ -37,7 +37,9 @@ enum STATE_ID {
     sMixin,sExpand,sDefine,
     sInstances,
     sArgument,
-    sCall
+    sCall,
+    
+    sSymbol
 };
 
 struct State {
@@ -80,10 +82,10 @@ enum MSCOPE {
 };
 
 struct MIdent {
-    std::string name;
+    /*Symbol*/int name;
     int argc;
 
-    MIdent(const std::string& x, int y);
+    MIdent(/*Symbol*/int x, int y);
 };
 
 std::ostream& operator<<(std::ostream&, const MIdent&);
@@ -93,7 +95,7 @@ std::ostream& operator<<(std::ostream&, const MIdent&);
 typedef SubState<sNoise, std::string> StateNoise;
 typedef SubState<sDatum, std::string> StateDatum;
 typedef SubState<sNumber,std::string> StateNumber;
-typedef SubState<sIdent, std::string> StateIdent;
+//typedef SubState<sIdent, std::string> StateIdent;
 
 typedef SubState<sCons> StateCons;
 
@@ -142,14 +144,14 @@ typedef SubState<sRealScope, ptr<Scope>> StateRealScope;
 struct dMacro {
     MSCOPE scope;
     std::vector<ptr<State>> pre;
-    std::string x;
-    std::vector<std::string> args;
+    /*Symbol*/int x;
+    std::vector</*Symbol*/int> args;
     std::vector<ptr<State>> post;
 
-    dMacro(MSCOPE scope, std::vector<ptr<State>>& pre, std::string& x,
-           std::vector<std::string>& args, std::vector<ptr<State>>& post);
-    dMacro(MSCOPE scope, std::string& x,
-           std::vector<std::string>& args, std::vector<ptr<State>>& post);
+    dMacro(MSCOPE scope, std::vector<ptr<State>>& pre, /*Symbol*/int x,
+           std::vector</*Symbol*/int>& args, std::vector<ptr<State>>& post);
+    dMacro(MSCOPE scope, /*Symbol*/int x,
+           std::vector</*Symbol*/int>& args, std::vector<ptr<State>>& post);
     dMacro();
 };
 
@@ -174,5 +176,12 @@ std::ostream& operator<<(std::ostream&, const dArgument&);
 
 typedef SubState<sArgument, dArgument> StateArgument;
 typedef SubState<sCall, std::vector<ptr<State>>> StateCall;
+
+//----------------------------------------------------------------------
+
+int GetSymbol(const std::string&);
+std::string GetSymbol(int id);
+
+typedef SubState<sSymbol, int> StateSymbol;
 
 #endif

@@ -37,8 +37,12 @@ NULL 10 : wscomment := ~/((/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)+|[ 
  0 : local  := ~/local/~
  0 : object := ~/object/~
  0 : method := ~/method/~
+ 
+%{
+    #include <parser_obj.hpp>
+%}
 
-attr(ident)   := %{ retval = %; %}
+attr(ident)   := %{ retval = GetSymbol(%); %}
 attr(string)  := %{ retval = %; %}
 attr(regexp)  := %{ retval = %; %}
 attr(integer) := %{ retval = %; %}

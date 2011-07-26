@@ -5,7 +5,7 @@ std::ostream& operator<<(std::ostream& out, const Scope& x) {
 }
 
 MName::MName() {}
-MName::MName(const ptr<Macro>& macro, const std::vector<std::string>& args) {
+MName::MName(const ptr<Macro>& macro, const std::vector</*Symbol*/int>& args) {
     this->args = args;
     this->macro = macro;
 }
@@ -30,7 +30,7 @@ std::ostream& operator<<(std::ostream& out, const Macros& x) {
     return out;
 }
 
-ptr<Macro> Macros::find(const std::string& name, int argc) {
+ptr<Macro> Macros::find(/*Symbol*/int name, int argc) {
     if(argc<0 || argc>=MAXARG) return ptr<Macro>::null;
 
     MacroHash& hashe = hash[argc];
@@ -173,8 +173,8 @@ ptr<Scope> Scope::halfclone(ptr<Scope> ths) {
 Mutex errlock;
 static ptr<State> procMacro(ptr<Scope> cur, const std::vector<MName>& names, ptr<State> x, const dMacro& data) {
     MSCOPE acc = data.scope;
-    const std::string& n = data.x;
-    const std::vector<std::string>& args = data.args;
+    /*Symbol*/int n = data.x;
+    const std::vector</*Symbol*/int>& args = data.args;
     const std::vector<ptr<State>>& post = data.post;
     if(args.size()>=MAXARG) {
         errlock.acquire();
@@ -228,7 +228,29 @@ static ptr<State> procMacro(ptr<Scope> cur, const std::vector<MName>& names, ptr
 }
 
 static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& names) {
-    if(x->id == sIdent) {
+    if(x->id == sSymbol) {
+        StateSymbol& y = (StateSymbol&) *x;
+        ptr<State> arg;
+        
+        for(auto i = names.begin(); i!=names.end(); i++) {
+            const MName& name = *i;
+            int cnt = 0;
+            for(auto j = name.args.begin(); j!=name.args.end(); j++) {
+                int xarg = *j;
+                if(xarg == y.data) {
+                    arg = ptr<State>(new StateArgument(dArgument(name.macro->id,cnt)));
+                    break;
+                }
+                cnt++;
+            }
+            if(arg!=ptr<State>::null)
+                break;
+        }
+        
+        if(arg!=ptr<State>::null) return arg;
+        else return x;
+    }else
+    /*if(x->id == sIdent) {
         StateIdent& y = (StateIdent&) *x;
         ptr<State> arg;
 
@@ -236,7 +258,7 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
             const MName& name = *i;
             int cnt = 0;
             for(auto j = name.args.begin(); j!=name.args.end(); j++) {
-                const std::string& xarg = *j;
+                int xarg = *j;
                 if(xarg.compare(y.data)==0) {
                     arg = ptr<State>(new StateArgument(dArgument(name.macro->id,cnt)));
                     break;
@@ -250,7 +272,7 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
         if(arg!=ptr<State>::null) return arg;
         else return x;
 
-    }else if(x->id == sScope) {
+    }else */if(x->id == sScope) {
         StateScope& y = (StateScope&) *x;
         ptr<Scope> s = childScope(cur,y.data,names);
         return ptr<State>(new StateRealScope(s));
@@ -341,7 +363,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
     //local macros
     for(auto ite = self->macros.begin(); ite != self->macros.end(); ite++) {
         ptr<Macro>& m = *ite;
-        ret->hash[m->argc].insert(std::pair<std::string,ptr<Macro>>(m->name,m));
+        ret->hash[m->argc].insert(std::pair</*Symbol*/int,ptr<Macro>>(m->name,m));
     }
 
     //restrict set is empty, so no further macros can possibly be visible
@@ -367,7 +389,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
         const auto& macros = self->mfile->globalscope->macros;
         for(auto ite = macros.begin(); ite!=macros.end(); ite++) {
             const ptr<Macro>& m = *ite;
-            ret->hash[m->argc].insert(std::pair<std::string,ptr<Macro>> (m->name,m));
+            ret->hash[m->argc].insert(std::pair</*Symbol*/int,ptr<Macro>> (m->name,m));
         }
 
         for(auto ite = self->mfile->imports.begin(); ite != self->mfile->imports.end(); ite++) {
@@ -376,7 +398,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
                 const auto& macros = mfile->macros;
                 for(auto jte = macros.begin(); jte!=macros.end(); jte++) {
                     ptr<Macro> m = *jte;
-                    ret->hash[m->argc].insert(std::pair<std::string,ptr<Macro>> (m->name,m));
+                    ret->hash[m->argc].insert(std::pair</*Symbol*/int,ptr<Macro>> (m->name,m));
                 }
             }
         }
@@ -391,7 +413,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
 /*!!*/      for(auto ite = pmap.begin(); ite != pmap.end(); ite++) {
 /*!*/           if(!self->hasrestricts || rest.find(ite->first)!=rest.end()) {
 /*!*/               if(self->discard!=ite->second)
-/*!!*/                  tmap.insert(std::pair<std::string,ptr<Macro>>(ite->first,ite->second));
+/*!!*/                  tmap.insert(std::pair</*Symbol*/int,ptr<Macro>>(ite->first,ite->second));
                 }
             }
         }

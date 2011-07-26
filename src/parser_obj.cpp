@@ -11,7 +11,9 @@ static const char* names[] = {
     "sMixin","sExpand","sDefine",
     "sInstances",
     "sArgument",
-    "sCall"
+    "sCall",
+    
+    "sSymbol"
 };
 
 MFile::MFile(const std::string& package, const std::string& fname, const std::string& rname) {
@@ -37,7 +39,7 @@ std::ostream& operator<<(std::ostream& out, const MFile& x) {
     return out << x.scope;
 }
 
-MIdent::MIdent(const std::string& x, int y) {
+MIdent::MIdent(/*Symbol*/int x, int y) {
     name = x;
     argc = y;
 }
@@ -80,16 +82,16 @@ std::ostream& operator<<(std::ostream& out, const dMScopeBrack& x) {
     return out << "$[" << x.ms << " -> " << x.x << "]";
 }
 
-dMacro::dMacro(MSCOPE scope, std::vector<ptr<State> >& pre, std::string& x,
-               std::vector<std::string>& args, std::vector<ptr<State> >& post) {
+dMacro::dMacro(MSCOPE scope, std::vector<ptr<State> >& pre, /*Symbol*/int x,
+               std::vector</*Symbol*/int>& args, std::vector<ptr<State> >& post) {
     this->scope = scope;
     this->pre = pre;
     this->x = x;
     this->args = args;
     this->post = post;
 }
-dMacro::dMacro(MSCOPE scope, std::string& x,
-               std::vector<std::string>& args, std::vector<ptr<State> >& post) {
+dMacro::dMacro(MSCOPE scope, /*Symbol*/int x,
+               std::vector</*Symbol*/int>& args, std::vector<ptr<State> >& post) {
     this->scope = scope;
     this->x = x;
     this->args = args;
@@ -118,5 +120,31 @@ dArgument::dArgument() {}
 
 std::ostream& operator<<(std::ostream& out, const dArgument& x) {
     return out << "!ARG!";
+}
+
+//--------------------------------------------------------------------------------------------------
+
+static std::vector<std::string> SymbolTable;
+static std::unordered_map<std::string, int> SymbolMap;
+static Mutex symlock;
+
+int GetSymbol(const std::string& name) {
+    symlock.acquire();
+    auto ite = SymbolMap.find(name);
+    if(ite != SymbolMap.end()) {
+        symlock.release();
+        return (*ite).second;
+    }    
+    else {
+        int id = SymbolTable.size();
+        SymbolTable.push_back(name);
+        SymbolMap.insert(std::pair<std::string,int>(name,id));
+        symlock.release();
+        return id;
+    }
+}
+
+std::string GetSymbol(int id) {
+    return SymbolTable[id];
 }
 

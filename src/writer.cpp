@@ -134,7 +134,15 @@ void writer::print(std::ostream& out, ptr<State> x) {
             nl = false;
         }
 
-    }else if(x->id==sIdent) {
+    }else if(x->id==sSymbol) {
+        StateSymbol& y = (StateSymbol&) *x;
+        if(nl) out << "\n" << tab;
+        if(pre && !nl && spaces) out << " ";
+        nl = false;
+        out << GetSymbol(y.data);
+        pre = true;
+    }
+    /*else if(x->id==sIdent) {
         StateIdent& y = (StateIdent&) *x;
         if(nl) out << "\n" << tab;
         if(pre && !nl && spaces) out << " ";
@@ -142,7 +150,7 @@ void writer::print(std::ostream& out, ptr<State> x) {
         out << y.data;
         pre = true;
 
-    }else if(x->id==sNoise) {
+    }*/else if(x->id==sNoise) {
         StateNoise& y = (StateNoise&) *x;
         if(nl && y.data[0]!=';') out << "\n" << tab;
         out << y.data;
@@ -224,7 +232,7 @@ void writer::print(std::ostream& out, ptr<State> x) {
         if(y.data->instances.size()>0)
             if(nl) out << "\n" << tab;
 
-        for(std::map<std::string,std::vector<ptr<State>>>::const_iterator i = y.data->instances.begin();
+        for(std::map</*Symbol*/int,std::vector<ptr<State>>>::const_iterator i = y.data->instances.begin();
             i!=y.data->instances.end(); i++)
             print(out,i->second);
 

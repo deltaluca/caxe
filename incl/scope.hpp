@@ -16,18 +16,18 @@ struct Macro;
 
 struct MName {
     ptr<Macro> macro;
-    std::vector<std::string> args;
-    MName(const ptr<Macro>& macro, const std::vector<std::string>& args);
+    std::vector</*Symbol*/int> args;
+    MName(const ptr<Macro>& macro, const std::vector</*Symbol*/int>& args);
     MName();
 };
 
-typedef std::unordered_map<std::string, ptr<Macro>> MacroHash;
+typedef std::unordered_map</*Symbol*/int, ptr<Macro>> MacroHash;
 
 struct Macros {
     MacroHash hash[MAXARG];
     Macros();
 
-    ptr<Macro> find(const std::string& name, int argc);
+    ptr<Macro> find(/*Symbol*/int name, int argc);
     void build(const std::vector<MIdent>&);
     bool empty() const;
 };
@@ -41,7 +41,7 @@ struct Scope {
     bool isglobal;
 
     bool hasrestricts;
-    std::unordered_set<std::string> restricts[10];
+    std::unordered_set</*Symbol*/int> restricts[10];
     ptr<Macro> discard; //opposite of restrict set, but only 1 as not opened up to user use.
     //and just used to hide a macro from itself instead.
 
