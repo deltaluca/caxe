@@ -42,8 +42,6 @@ struct Scope {
 
     bool hasrestricts;
     std::unordered_set</*Symbol*/int> restricts[10];
-    ptr<Macro> discard; //opposite of restrict set, but only 1 as not opened up to user use.
-    //and just used to hide a macro from itself instead.
 
     bool nobrace;
     bool virtuals;

@@ -165,7 +165,6 @@ ptr<Scope> Scope::halfclone(ptr<Scope> ths) {
     for(int i = 0; i<MAXARG; i++) ret->restricts[i] = ths->restricts[i];
     ret->hasrestricts = ths->hasrestricts;
     ret->mfile = ths->mfile;
-    ret->discard = ths->discard;
     return ret;
 }
 
@@ -200,7 +199,6 @@ static ptr<State> procMacro(ptr<Scope> cur, const std::vector<MName>& names, ptr
 
     mac->scope = insularScope(cur,post,names2);
     mac->scope->nobrace = true;
-    mac->scope->discard = mac;
 
     if(sacc!=ptr<Scope>::null) sacc->macros.push_back(mac);
     else {
@@ -326,7 +324,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
     }
 
     //can we use parent macro set?
-    if(self->macros.empty() && (!self->hasrestricts && self->discard==ptr<Macro>::null)) {
+    if(self->macros.empty() && !self->hasrestricts) {
         if(self->parent != self) {
             self->macsinscope = Scope::macros_in_scope(self->parent);
             self->macmut.release();
@@ -346,9 +344,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
     //restrict set is empty, so no further macros can possibly be visible
     //if discard is non-null, then cannot take this shortcut
 
-    //gcov indicates THIS NEVER EVER RUNS!!!
-    //perhaps i should remove the enforced non-explicit recursion
-    if(self->hasrestricts && self->discard!=ptr<Macro>::null) {
+    if(self->hasrestricts) {
         //check there are no restrictions
         bool empty = true;
         for(int i = 0; i<MAXARG; i++) {
@@ -392,8 +388,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
             auto& rest = self->restricts[i];
 /*!!*/      for(auto ite = pmap.begin(); ite != pmap.end(); ite++) {
 /*!*/           if(!self->hasrestricts || rest.find(ite->first)!=rest.end()) {
-/*!*/               if(self->discard!=ite->second)
-/*!!*/                  tmap.insert(std::pair</*Symbol*/int,ptr<Macro>>(ite->first,ite->second));
+/*!!*/              tmap.insert(std::pair</*Symbol*/int,ptr<Macro>>(ite->first,ite->second));
                 }
             }
         }
