@@ -249,30 +249,7 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
         
         if(arg!=ptr<State>::null) return arg;
         else return x;
-    }else
-    /*if(x->id == sIdent) {
-        StateIdent& y = (StateIdent&) *x;
-        ptr<State> arg;
-
-        for(auto i = names.begin(); i!=names.end(); i++) {
-            const MName& name = *i;
-            int cnt = 0;
-            for(auto j = name.args.begin(); j!=name.args.end(); j++) {
-                int xarg = *j;
-                if(xarg.compare(y.data)==0) {
-                    arg = ptr<State>(new StateArgument(dArgument(name.macro->id,cnt)));
-                    break;
-                }
-                cnt++;
-            }
-            if(arg!=ptr<State>::null)
-                break;
-        }
-
-        if(arg!=ptr<State>::null) return arg;
-        else return x;
-
-    }else */if(x->id == sScope) {
+    }else if(x->id == sScope) {
         StateScope& y = (StateScope&) *x;
         ptr<Scope> s = childScope(cur,y.data,names);
         return ptr<State>(new StateRealScope(s));

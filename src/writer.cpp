@@ -141,16 +141,7 @@ void writer::print(std::ostream& out, ptr<State> x) {
         nl = false;
         out << GetSymbol(y.data);
         pre = true;
-    }
-    /*else if(x->id==sIdent) {
-        StateIdent& y = (StateIdent&) *x;
-        if(nl) out << "\n" << tab;
-        if(pre && !nl && spaces) out << " ";
-        nl = false;
-        out << y.data;
-        pre = true;
-
-    }*/else if(x->id==sNoise) {
+    }else if(x->id==sNoise) {
         StateNoise& y = (StateNoise&) *x;
         if(nl && y.data[0]!=';') out << "\n" << tab;
         out << y.data;

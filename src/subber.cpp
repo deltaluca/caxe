@@ -60,63 +60,6 @@ static std::vector<ptr<State>> concatenate(const std::vector<ptr<State>>& xs) {
             ret.push_back(x);
         }
     }
-    
-    /*std::string* preident = NULL;
-    bool precons = false;
-    
-    for(auto i = xs.begin(); i!=xs.end(); i++) {
-        ptr<State> x = *i;
-        if(x->id==sRealScope) {
-            StateRealScope& y = (StateRealScope&) *x;
-            ptr<Scope> yscope = y.data;
-            if(yscope->data.empty() && yscope->nobrace) {
-                if(precons && preident!=NULL)
-                    ret.pop_back();
-                else {
-                    ptr<StateIdent> nx (new StateIdent(""));
-                    ret.push_back(ptr<State>(nx));
-                    preident = &nx->data;
-                }
-                precons = false;
-            }else {
-                precons = false;
-                preident = NULL;
-                ret.push_back(x);
-            }
-        }else if(x->id==sCons) {
-            if(!precons) {
-                if(preident!=NULL) {
-                    precons = true;
-                    ret.push_back(x);
-                }
-            }
-        }else if(x->id==sIdent) {
-            StateIdent& y = (StateIdent&) *x;
-            if(precons && preident!=NULL) {
-                ret.pop_back();
-                (*preident) += y.data;
-            }else {
-                ret.push_back(x);
-                preident = &y.data;
-            }
-            precons = false;
-        }else if(x->id==sNumber) {
-            StateNumber& y = (StateNumber&) *x;
-            if(precons && preident!=NULL) {
-                ret.pop_back();
-                (*preident) += y.data;
-            }else {
-                if(precons)
-                    ret.pop_back();
-                ret.push_back(x);
-            }
-            precons = false;
-        }else {
-            precons = false;
-            preident = NULL;
-            ret.push_back(x);
-        }
-    }*/
 
     return ret;
 }
@@ -150,21 +93,7 @@ void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, p
                 std::vector<ptr<State>> inst = Macro::instantiate(macro,args);
                 subs_data(ret, inst, Scope::macros_in_scope(macro->scope));
             }
-        }else 
-        
-        /*else if(x->id==sIdent) {
-            StateIdent& y = (StateIdent&) *x;
-            ptr<Macro> macro = macros->find(y.data,0);
-            if(macro==ptr<Macro>::null) {
-                preident = y.data;
-                ret.push_back(x);
-            }else {
-                std::vector<ptr<State>> args;
-                std::vector<ptr<State>> inst = Macro::instantiate(macro,args);
-                subs_data(ret, inst, Scope::macros_in_scope(macro->scope));
-            }
-
-        }else */if(x->id==sCall) {
+        }else if(x->id==sCall) {
             StateCall& y = (StateCall&) *x;
             bool snd = true;
             for(auto i = y.data.begin(); i!=y.data.end(); i++) subs(((StateRealScope&) **i).data);

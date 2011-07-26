@@ -47,11 +47,7 @@ static ptr<Macro> half_clone(ptr<Macro> m) {
         if(x->id==sSymbol) {
             StateSymbol& y = (StateSymbol&) *x;
             ret->preamble.push_back(ptr<State>(new StateSymbol(y.data)));
-        }else 
-        /*if(x->id==sIdent) {
-            StateIdent& y = (StateIdent&) *x;
-            ret->preamble.push_back(ptr<State>(new StateIdent(y.data)));
-        }else */{
+        }else { 
             StateNoise& y = (StateNoise&) *x;
             ret->preamble.push_back(ptr<State>(new StateNoise(y.data)));
         }
@@ -85,11 +81,7 @@ static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vecto
         }else if(x->id==sSymbol) {
             //copy it incase concatenation operators modify value later!.
             ret.push_back(ptr<State>(new StateSymbol(((StateSymbol&)*x).data)));
-        }else 
-        //else if(x->id==sIdent) {
-            //copy it incase concatenation operators modify value later!.
-            //ret.push_back(ptr<State>(new StateIdent(((StateIdent&)*x).data)));
-        /*}else */if(x->id==sDatum) {
+        }else if(x->id==sDatum) {
             ret.push_back(x);
         }else if(x->id==sNumber) {
             ret.push_back(x);
