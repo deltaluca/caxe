@@ -345,6 +345,9 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
 
     //restrict set is empty, so no further macros can possibly be visible
     //if discard is non-null, then cannot take this shortcut
+
+    //gcov indicates THIS NEVER EVER RUNS!!!
+    //perhaps i should remove the enforced non-explicit recursion
     if(self->hasrestricts && self->discard!=ptr<Macro>::null) {
         //check there are no restrictions
         bool empty = true;
