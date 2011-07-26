@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
 
     //-----------------------------------------------------------------
 
-    clock_t clk = clock();
+    struct timespec clk; clock_gettime(CLOCK_MONOTONIC, &clk);
 
     //-----------------------------------------------------------------
 
@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
     delete [] lexers;
     delete [] parsers;
     
-    clock_t flpclk = clock();
+    struct timespec flpclk; clock_gettime(CLOCK_MONOTONIC, &flpclk);
 
     //-----------------------------------------------------------------
 
@@ -123,7 +123,7 @@ int main(int argc, char* argv[]) {
 
     delete [] ans;
 
-    clock_t ansclk = clock();
+    struct timespec ansclk; clock_gettime(CLOCK_MONOTONIC, &ansclk);
 
     //-----------------------------------------------------------------
 
@@ -159,7 +159,8 @@ int main(int argc, char* argv[]) {
         sub[i].wait();
 
     delete [] sub;
-    clock_t subclk = clock();
+
+    struct timespec subclk; clock_gettime(CLOCK_MONOTONIC, &subclk);
 
     //-----------------------------------------------------------------
 
@@ -178,21 +179,22 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    clock_t fclk = clock();
+    struct timespec fclk; clock_gettime(CLOCK_MONOTONIC, &fclk);
 
     //-----------------------------------------------------------------
 
     if(__times) {
-        double dt = double(clock()-clk)/double(CLOCKS_PER_SEC);
-        double dt0 = double(flpclk-clk)/double(CLOCKS_PER_SEC);
-        double dt1 = double(ansclk-flpclk)/double(CLOCKS_PER_SEC);
-        double dt3 = double(subclk-ansclk)/double(CLOCKS_PER_SEC);
-        double dt4 = double(fclk-subclk)/double(CLOCKS_PER_SEC);
+        struct timespec curclk; clock_gettime(CLOCK_MONOTONIC, &curclk);
+        double dt  = double(curclk.tv_sec - clk.tv_sec)    + double(curclk.tv_nsec - clk.tv_nsec   )*1e-9;
+        double dt1 = double(flpclk.tv_sec - clk.tv_sec)    + double(flpclk.tv_nsec - clk.tv_nsec   )*1e-9;
+        double dt2 = double(ansclk.tv_sec - flpclk.tv_sec) + double(ansclk.tv_nsec - flpclk.tv_nsec)*1e-9;
+        double dt3 = double(subclk.tv_sec - ansclk.tv_sec) + double(subclk.tv_nsec - ansclk.tv_nsec)*1e-9;
+        double dt4 = double(fclk.tv_sec   - subclk.tv_sec) + double(fclk.tv_nsec   - subclk.tv_nsec)*1e-9;
         std::cout << "--times:\n";
         std::cout << "\tTOTAL:     " << dt << "s\n";
         std::cout << "\n";
-        std::cout << "\tlex/parse: " << dt0 << "s\n";
-        std::cout << "\tanalysis:  " << dt1 << "s\n";
+        std::cout << "\tlex/parse: " << dt1 << "s\n";
+        std::cout << "\tanalysis:  " << dt2 << "s\n";
         std::cout << "\tmacro sub: " << dt3 << "s\n";
         if(_out) std::cout << "\tun-parse:  " << dt4 << "s\n";
     }

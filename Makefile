@@ -15,9 +15,9 @@ OBJ = obj
 BIN = bin
 EXEC = caxe
 
-CXX = g++-4.6
+CXX = g++
 CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
-OP = -Ofast \
+OP = -O3 \
   -fmerge-all-constants \
   -fmodulo-sched \
   -fmodulo-sched-allow-regmoves \
@@ -58,7 +58,8 @@ LEXEROP = -falign-functions\
   -funwind-tables\
   -fvpt\
   -funroll-all-loops
-LFLAGS = -lpthread
+
+LFLAGS = -lpthread -lrt
 
 _OBJS = main.o \
 	anal.o \
