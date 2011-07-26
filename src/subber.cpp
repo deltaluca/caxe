@@ -67,7 +67,7 @@ static std::vector<ptr<State>> concatenate(const std::vector<ptr<State>>& xs) {
 void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, ptr<Macros> macros) {
     std::vector<ptr<State>> data = concatenate(in_data);
 
-    int preident;
+    int preident = -1;
     for(auto i = data.begin(); i!=data.end(); i++) {
         ptr<State> x = *i;
         if(x->id==sRealScope) {
