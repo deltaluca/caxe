@@ -388,10 +388,10 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
             auto& pmap = par->hash[i];
             auto& tmap = ret->hash[i];
             auto& rest = self->restricts[i];
-            for(auto ite = pmap.begin(); ite != pmap.end(); ite++) {
-                if(!self->hasrestricts || rest.find(ite->first)!=rest.end()) {
-                    if(self->discard!=ite->second)
-                        tmap.insert(std::pair<std::string,ptr<Macro>>(ite->first,ite->second));
+/*!!*/      for(auto ite = pmap.begin(); ite != pmap.end(); ite++) {
+/*!*/           if(!self->hasrestricts || rest.find(ite->first)!=rest.end()) {
+/*!*/               if(self->discard!=ite->second)
+/*!!*/                  tmap.insert(std::pair<std::string,ptr<Macro>>(ite->first,ite->second));
                 }
             }
         }
