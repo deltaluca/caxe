@@ -16,8 +16,8 @@ BIN = bin
 EXEC = caxe
 
 CXX = g++
-CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL) -fprofile-arcs -ftest-coverage
-iOP = -O3 \
+CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
+OP = -O3 \
   -fmerge-all-constants \
   -fmodulo-sched \
   -fmodulo-sched-allow-regmoves \
@@ -27,7 +27,7 @@ iOP = -O3 \
   -funsafe-loop-optimizations -Wunsafe-loop-optimizations \
   
 # lexer.cpp doesn't compile with even -O1
-iLEXEROP = -falign-functions\
+LEXEROP = -falign-functions\
   -falign-jumps\
   -falign-labels\
   -falign-loops\
@@ -59,7 +59,7 @@ iLEXEROP = -falign-functions\
   -fvpt\
   -funroll-all-loops
 
-LFLAGS = -lpthread -lrt -lgcov
+LFLAGS = -lpthread -lrt
 
 _OBJS = main.o \
 	anal.o \
