@@ -145,6 +145,9 @@ int GetSymbol(const std::string& name) {
 }
 
 std::string GetSymbol(int id) {
-    return SymbolTable[id];
+	symlock.acquire();
+    std::string& ret = SymbolTable[id];
+    symlock.release();
+    return ret;
 }
 

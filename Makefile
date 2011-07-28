@@ -17,7 +17,7 @@ EXEC = caxe
 
 CXX = g++
 CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
-OP = -O3 \
+OP = -Ofast \
   -fmerge-all-constants \
   -fmodulo-sched \
   -fmodulo-sched-allow-regmoves \
