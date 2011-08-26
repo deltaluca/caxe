@@ -92,6 +92,7 @@ void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, p
                 std::vector<ptr<State>> args;
                 std::vector<ptr<State>> inst = Macro::instantiate(macro,args);
                 subs_data(ret, inst, Scope::macros_in_scope(macro->scope));
+				preident = -1;
             }
         }else if(x->id==sCall) {
             StateCall& y = (StateCall&) *x;

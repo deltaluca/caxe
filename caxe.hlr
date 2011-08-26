@@ -134,6 +134,7 @@
     | STR    %{ retval = StateSymbol(GetSymbol("str")); %}
 
     | LPAREN args RPAREN %{ retval = StateCall((States&)%1); %}
+    | LPAREN RPAREN %{ retval = StateCall(); %}
 
     | mimport RPAREN semi %{ retval = StateMImport(dMImport("")); %}
     | mimport qname RPAREN semi %{ retval = StateMImport(dMImport((std::string&)%1)); %}
