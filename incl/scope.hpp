@@ -37,7 +37,7 @@ struct Scope {
     int id;
 
     ptr<MFile> mfile;
-    ptr<Scope> parent;
+    ptr<Scope> parent, parent_macro;
     bool isglobal;
 
     bool hasrestricts;

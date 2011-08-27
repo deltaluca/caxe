@@ -57,6 +57,8 @@ Scope::Scope(bool nid) {
     idmut.release();
     isglobal = nobrace = virtuals = insular = false;
 
+	parent_macro = ptr<Scope>::null;
+
     _file = RESET;
     _object = RESET;
     _method = RESET;
@@ -313,6 +315,20 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
 
 //----------------------------------------------------------------------
 
+static void merge(ptr<Scope> self, ptr<Macros> ret, ptr<Scope> parent) {	
+	ptr<Macros> par = Scope::macros_in_scope(parent);
+	for(int i = 0; i<MAXARG; i++) {
+		auto& pmap = par->hash[i];
+		auto& tmap = ret->hash[i];
+		auto& rest = self->restricts[i];
+/*!!*/      for(auto ite = pmap.begin(); ite != pmap.end(); ite++) {
+/*!*/           if(!self->hasrestricts || rest.find(ite->first)!=rest.end()) {
+/*!!*/              tmap.insert(std::pair</*Symbol*/int,ptr<Macro>>(ite->first,ite->second));
+			}
+		}
+	}
+}
+
 ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
     self->macmut.acquire();
     if(self->macsinscope != ptr<Macros>::null) {
@@ -324,6 +340,9 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
     if(self->macros.empty() && !self->hasrestricts) {
         if(self->parent != self) {
             self->macsinscope = Scope::macros_in_scope(self->parent);
+			if(self->parent_macro!=ptr<Scope>::null && self->parent_macro!=self)
+				merge(self,self->macsinscope,self->parent_macro);
+
             self->macmut.release();
             return self->macsinscope;
         }
@@ -377,19 +396,12 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
         }
     }
     //otherwise query parent macros and unify with restriction
-    else {
-        ptr<Macros> par = Scope::macros_in_scope(self->parent);
-        for(int i = 0; i<MAXARG; i++) {
-            auto& pmap = par->hash[i];
-            auto& tmap = ret->hash[i];
-            auto& rest = self->restricts[i];
-/*!!*/      for(auto ite = pmap.begin(); ite != pmap.end(); ite++) {
-/*!*/           if(!self->hasrestricts || rest.find(ite->first)!=rest.end()) {
-/*!!*/              tmap.insert(std::pair</*Symbol*/int,ptr<Macro>>(ite->first,ite->second));
-                }
-            }
-        }
-    }
+    else
+		merge(self,ret,self->parent);
+
+	//merge with macro parent macros
+	if(self->parent_macro!=ptr<Scope>::null && self->parent_macro!=self)
+		merge(self,ret,self->parent_macro);
 
     self->macsinscope = ret;
     self->macmut.release();
