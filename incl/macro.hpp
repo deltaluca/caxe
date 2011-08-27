@@ -32,11 +32,11 @@ struct Macro {
     int argc;
 
     Mutex instlock;
-    std::map</*Symbol*/int,std::vector<ptr<State>>> instances;
+    std::map</*Symbol*/int,ptr<State>> instances;
 
     Macro(const ptr<State>& x);
 
-    static std::vector<ptr<State>> instantiate(ptr<Macro> self, const std::vector<ptr<State>>& args);
+    static ptr<State> instantiate(ptr<Macro> self, const std::vector<ptr<State>>& args, const ptr<Scope>& cscope);
 };
 
 std::ostream& operator<<(std::ostream&,const Macro&);

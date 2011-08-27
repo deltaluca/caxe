@@ -64,7 +64,7 @@ static std::vector<ptr<State>> concatenate(const std::vector<ptr<State>>& xs) {
     return ret;
 }
 
-void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, ptr<Macros> macros) {
+void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, ptr<Macros> macros, ptr<Scope> cscope) {
     std::vector<ptr<State>> data = concatenate(in_data);
 
     int preident = -1;
@@ -89,9 +89,10 @@ void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, p
                 preident = y.data;
                 ret.push_back(x);
             }else {
-                std::vector<ptr<State>> args;
-                std::vector<ptr<State>> inst = Macro::instantiate(macro,args);
-                subs_data(ret, inst, Scope::macros_in_scope(macro->scope));
+				std::vector<ptr<State>> args;
+				ptr<State> inst = Macro::instantiate(macro,args,cscope);
+				if(inst!=ptr<State>::null)
+					ret.push_back(inst);
 				preident = -1;
             }
         }else if(x->id==sCall) {
@@ -104,8 +105,10 @@ void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, p
                 if(macro!=ptr<Macro>::null) {
                     snd = false;
                     ret.pop_back();
-                    std::vector<ptr<State>> inst = Macro::instantiate(macro,y.data);
-                    subs_data(ret, inst, Scope::macros_in_scope(macro->scope));
+
+					ptr<State> inst = Macro::instantiate(macro,y.data,cscope);
+					if(inst!=ptr<State>::null)
+						ret.push_back(inst);
                 }
             }
 
@@ -122,7 +125,7 @@ void subs(ptr<Scope> cscope) {
     while(!cscope->test.trylock())
         std::cout << "???????\n";
     std::vector<ptr<State>> data;
-    subs_data(data, cscope->data, Scope::macros_in_scope(cscope));
+    subs_data(data, cscope->data, Scope::macros_in_scope(cscope), cscope);
     cscope->data.swap(data);
     cscope->test.release();
 }

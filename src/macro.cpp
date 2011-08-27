@@ -60,7 +60,7 @@ static ptr<Macro> half_clone(ptr<Macro> m) {
 
 #include "writer.hpp"
 
-static ptr<Scope> instScope(ptr<Macro> self, ptr<Scope> s, const std::vector<ptr<State>>& args, ptr<Scope> cscope);
+static ptr<Scope> instScope(const ptr<Macro>& self, const ptr<Scope>& s, const std::vector<ptr<State>>& args, const ptr<Scope>& cscope);
 static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vector<ptr<State>>& post, const std::vector<ptr<State>>& args, ptr<Scope> cscope) {
 
     for(auto i = post.begin(); i!=post.end(); i++) {
@@ -143,23 +143,79 @@ static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vecto
     }
 }
 
-static ptr<Scope> instScope(ptr<Macro> self, ptr<Scope> s, const std::vector<ptr<State>>& args, ptr<Scope> cscope) {
+static ptr<Scope> rebase(ptr<Macro> self, ptr<Scope> s, ptr<Scope> base) {
+	std::vector<ptr<State>> args;
+	return instScope(self, s, args, base);
+}
+
+static ptr<Scope> instScope(const ptr<Macro>& self, const ptr<Scope>& s, const std::vector<ptr<State>>& args, const ptr<Scope>& cscope) {
     ptr<Scope> ret = Scope::halfclone(s);
     for(auto i = s->macros.begin(); i!=s->macros.end(); i++) {
-        ptr<Macro> omac = *i;
+        const ptr<Macro>& omac = *i;
         ptr<Macro> mac = half_clone(omac);
         //handle macros in mac.scope.macros?
-        mac->scope = instScope(self, omac->scope,args,ret);
+        mac->scope = instScope(self, omac->scope,args, ret);
         ret->macros.push_back(mac);
     }
+
     ret->parent = cscope;
     inst(self, ret->data, s->data, args, ret);
+
     return ret;
 }
 
 static Mutex writelock;
 
-std::vector<ptr<State>> Macro::instantiate(ptr<Macro> self, const std::vector<ptr<State>>& args) {
+ptr<State> Macro::instantiate(ptr<Macro> self, const std::vector<ptr<State>>& args, const ptr<Scope>& cscope) {
+	if(self->type==mMixin) {
+		auto sc = instScope(self, self->scope, args, self->scope->parent);
+		subs(sc);
+		sc = rebase(self,sc,cscope);
+		subs(sc);
+		return ptr<State>(new StateRealScope(sc));
+	} else {
+		std::stringstream str;
+		writelock.acquire();
+		writer::spaces = false; //disable spacing
+		writer::print(str, args);
+		writer::spaces = true;
+		writelock.release();
+
+		std::string skey = GetSymbol(self->name)+"_"+str.str();
+        for(unsigned int i = 0; i<skey.length(); i++) {
+            char c = skey[i];
+            if(c<=32) skey.erase(i,1);
+            else if(!((c>=48&&c<=57)||(c>=65&&c<=90)||(c>=97&&c<=122))) skey.replace(i,1,"_");
+        }
+        int key = GetSymbol(skey);
+
+        self->instlock.acquire();
+        if(self->instances.find(key)==self->instances.end()) {
+			ptr<State>& ret = self->instances.insert(std::pair</*Symbol*/int,ptr<State>>(key,ptr<State>::null)).first->second;
+            self->instlock.release();
+
+			auto sc = instScope(self, self->scope, args, self->scope->parent);
+			if(self->type == mDefine) {
+				std::vector<ptr<State>> inx;
+				inst(self, inx, self->preamble, args, sc);
+
+				sc->data.insert(sc->data.begin(), ptr<State>(new StateSymbol(key)));
+				for(auto i = inx.rbegin(); i!=inx.rend(); i++)
+					sc->data.insert(sc->data.begin(),*i);
+			}
+			subs(sc);
+			sc = rebase(self,sc,cscope);
+			subs(sc);
+			ret = ptr<State>(new StateRealScope(sc));
+		}else
+			self->instlock.release();
+
+		if(self->type==mDefine) return ptr<State>(new StateSymbol(key));
+		else return ptr<State>::null;
+	}
+}
+
+/*std::vector<ptr<State>> Macro::instantiate(ptr<Macro> self, const std::vector<ptr<State>>& args) {
     std::vector<ptr<State>> ret;
     if(self->type==mMixin) {
         ptr<Scope> scope = instScope(self, self->scope,args,self->scope->parent);
@@ -182,7 +238,7 @@ std::vector<ptr<State>> Macro::instantiate(ptr<Macro> self, const std::vector<pt
 
         self->instlock.acquire();
         if(self->instances.find(key)==self->instances.end()) {
-            std::vector<ptr<State>>& list = self->instances.insert(std::pair</*Symbol*/int,std::vector<ptr<State>>>(key,std::vector<ptr<State>>())).first->second;
+            std::vector<ptr<State>>& list = self->instances.insert(std::pair</*Symbol*//*int,std::vector<ptr<State>>>(key,std::vector<ptr<State>>())).first->second;
             self->instlock.release();
 
             std::vector<ptr<State>> inx;
@@ -198,4 +254,4 @@ std::vector<ptr<State>> Macro::instantiate(ptr<Macro> self, const std::vector<pt
         if(self->type==mDefine) ret.push_back(ptr<State>(new StateSymbol(key)));
     }
     return ret;
-}
+}*/

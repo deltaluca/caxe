@@ -223,7 +223,7 @@ void writer::print(std::ostream& out, ptr<State> x) {
         if(y.data->instances.size()>0)
             if(nl) out << "\n" << tab;
 
-        for(std::map</*Symbol*/int,std::vector<ptr<State>>>::const_iterator i = y.data->instances.begin();
+        for(std::map</*Symbol*/int,ptr<State>>::const_iterator i = y.data->instances.begin();
             i!=y.data->instances.end(); i++)
             print(out,i->second);
 
