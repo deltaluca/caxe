@@ -12,7 +12,7 @@ class Analyser : public Thread {
     ref<tsDeque<ptr<MFile> > > files;
     ref<const std::vector<std::string> > search_dir;
 
-    int run();
+    size_t run();
 
 public:
 

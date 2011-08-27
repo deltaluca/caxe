@@ -136,7 +136,7 @@ void Subber::init(std::deque<ptr<MFile>>::iterator& ite,tsDeque<ptr<MFile>>& fil
 }
 
 Mutex sublock;
-int Subber::run() {
+size_t Subber::run() {
     while(true) {
         sublock.acquire();
         if(*ite == files->list.end()) {

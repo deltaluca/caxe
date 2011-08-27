@@ -32,7 +32,7 @@ private:
 protected:
     pthread_t thread;
 
-    virtual int run() = 0;
+    virtual size_t run() = 0;
 
 public:
     Thread() {}

@@ -13,7 +13,7 @@ std::ostream& operator<<(std::ostream&, const ParserResult&);
 class Parser : public Thread {
 	ref<tsDeque<ptr<TOKEN> > > tokens;
 	ref<tsDeque<ParserResult> > results;
-	int run();
+	size_t run();
 public:
 	Parser();
 	void init(tsDeque<ptr<TOKEN> >& tokens, tsDeque<ParserResult>& results);

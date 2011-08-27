@@ -11,7 +11,7 @@ class Subber : public Thread {
     ref<std::deque<ptr<MFile>>::iterator> ite;
     ref<tsDeque<ptr<MFile>>> files;
 
-    int run();
+    size_t run();
 
 public:
 

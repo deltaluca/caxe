@@ -14,7 +14,7 @@ std::ostream& operator<<(std::ostream&,const TOKEN&);
 class Lexer : public Thread {
 	ref<tsDeque<ptr<TOKEN> > > tokens;
 	ref<tsDeque<std::string> > files;
-	int run();
+	size_t run();
 	void lexfile(const std::string&, char**, int&);
 public:
 	Lexer();

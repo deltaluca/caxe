@@ -8,7 +8,7 @@ void Importer::init(std::deque<ptr<MFile> >::iterator& ite,tsDeque<ptr<MFile> >&
 
 static Mutex implock;
 
-int Importer::run() {
+size_t Importer::run() {
 
     while(true) {
         implock.acquire();

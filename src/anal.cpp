@@ -13,7 +13,7 @@ void Analyser::init(tsDeque<ParserResult>& results,tsDeque<ptr<MFile>>& files,co
     this->results = results;
 }
 
-int Analyser::run() {
+size_t Analyser::run() {
     ParserResult result;
     while(results->try_pop(&result)) {
         const std::string& fname = result.file_name;

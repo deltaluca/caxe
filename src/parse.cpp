@@ -745,7 +745,7 @@ ParserResult::ParserResult(std::string& file_name, const Dynamic& data) {
 	this->file_name = file_name;
 	this->data = data;
 }
-int Parser::run() {
+size_t Parser::run() {
 std::vector<int> stack;
 std::vector<Dynamic> ret;
 

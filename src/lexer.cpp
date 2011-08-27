@@ -171,7 +171,7 @@ static const Transition transitions[13803] =
 #undef T3
 static const short entry_state = 14;
 static const int maxpoint = 128;
-int Lexer::run() {
+size_t Lexer::run() {
 	char* file = NULL;
 	int psize = 0;
 	while(true) {
