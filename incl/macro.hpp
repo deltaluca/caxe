@@ -34,9 +34,6 @@ struct Macro {
     Mutex instlock;
     std::map</*Symbol*/int,std::vector<ptr<State>>> instances;
 
-    ptr<Scope> parent;
-    ptr<Scope> owner;
-
     Macro(const ptr<State>& x);
 
     static std::vector<ptr<State>> instantiate(ptr<Macro> self, const std::vector<ptr<State>>& args);

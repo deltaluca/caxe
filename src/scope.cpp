@@ -216,9 +216,6 @@ static ptr<State> procMacro(ptr<Scope> cur, const std::vector<MName>& names, ptr
         errlock.release();
     }
 
-    mac->owner = sacc;
-    mac->parent = cur;
-
     if(mac->type!=mMixin)
         return ptr<State>(new StateInstances(mac));
     else

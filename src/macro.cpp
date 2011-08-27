@@ -73,7 +73,6 @@ static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vecto
                 ret.insert(ret.end(), ns->data.begin(), ns->data.end());
                 for(auto j = ns->macros.begin(); j!=ns->macros.end(); j++) {
                     ptr<Macro> m = *j;
-                    m->owner = m->parent = cscope;
                     cscope->macros.push_back(m);
                 }
             }else
@@ -118,7 +117,6 @@ static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vecto
                 ret.insert(ret.end(),ns->data.begin(),ns->data.end());
                 for(auto j = ns->macros.begin(); j!=ns->macros.end(); j++) {
                     ptr<Macro> m = *j;
-                    m->owner = m->parent = cscope;
                     cscope->macros.push_back(m);
                 }
             }else
@@ -151,8 +149,6 @@ static ptr<Scope> instScope(ptr<Macro> self, ptr<Scope> s, const std::vector<ptr
         ptr<Macro> omac = *i;
         ptr<Macro> mac = half_clone(omac);
         //handle macros in mac.scope.macros?
-        mac->owner = ret;
-        mac->parent = ret;
         mac->scope = instScope(self, omac->scope,args,ret);
         ret->macros.push_back(mac);
     }
