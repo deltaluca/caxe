@@ -32,7 +32,7 @@ Macro::Macro(const ptr<State>& x) {
 }
 
 std::ostream& operator<<(std::ostream& out,const Macro& x) {
-    return out << "MACRO! " << x.scope;
+    return out << "MACRO[id=" << x.id << ":" << GetSymbol(x.name) << "/" << x.argc << "]" << x.scope;
 }
 
 //-------------------------
@@ -69,11 +69,17 @@ static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vecto
             StateArgument& y = (StateArgument&) *x;
             if(self->id == y.data.macroid) {
                 StateRealScope& s = (StateRealScope&) *args[y.data.cnt];
+
+//				std::cout << "\nINSERTING ARGUMENT: " << GetSymbol(self->name) << "[" << y.data.cnt << "]\n";
+//				std::cout << "INST arg = " << s << "\n";
                 ptr<Scope> ns = instScope(self, s.data, args, cscope);
+//				std::cout << "INST argres = " << ns << "\n\n";
                 ret.insert(ret.end(), ns->data.begin(), ns->data.end());
                 for(auto j = ns->macros.begin(); j!=ns->macros.end(); j++) {
                     ptr<Macro> m = *j;
                     cscope->macros.push_back(m);
+					m->scope->parent = cscope;
+					m->scope->parent_macro = s.data;
                 }
             }else
                 ret.push_back(x);
@@ -149,7 +155,9 @@ static ptr<Scope> instScope(const ptr<Macro>& self, const ptr<Scope>& s, const s
         const ptr<Macro>& omac = *i;
         ptr<Macro> mac = half_clone(omac);
         //handle macros in mac.scope.macros?
-        mac->scope = instScope(self, omac->scope,args, ret);
+        mac->scope = instScope(self, omac->scope,args, omac->scope->parent);
+		mac->scope->parent_macro = mac->scope->parent;
+		mac->scope->parent = ret;
         ret->macros.push_back(mac);
     }
 
@@ -162,10 +170,15 @@ static ptr<Scope> instScope(const ptr<Macro>& self, const ptr<Scope>& s, const s
 static Mutex writelock;
 
 ptr<State> Macro::instantiate(ptr<Macro> self, const std::vector<ptr<State>>& args, const ptr<Scope>& cscope) {
+//	std::cout << "\nMacro::instantiate " << GetSymbol(self->name) << "/" << self->argc << "\n";
+//	std::cout << "args = " << args << std::endl;
+//	std::cout << "cscope = " << cscope << std::endl;
+
 	if(self->type==mMixin) {
-		auto sc = instScope(self, self->scope, args, cscope);
-		sc->parent_macro = self->scope->parent;
+		auto sc = instScope(self, self->scope, args, self->scope->parent);
+		sc->parent_macro = self->scope->parent_macro;
 		subs(sc);
+//		std::cout << "res = " << sc << std::endl << "\n\n";
 		return ptr<State>(new StateRealScope(sc));
 	} else {
 		std::stringstream str;
@@ -197,7 +210,7 @@ ptr<State> Macro::instantiate(ptr<Macro> self, const std::vector<ptr<State>>& ar
 				for(auto i = inx.rbegin(); i!=inx.rend(); i++)
 					sc->data.insert(sc->data.begin(),*i);
 			}
-			sc->parent_macro = self->scope->parent;
+//			sc->parent_macro = self->scope->parent;
 			subs(sc);
 			ret = ptr<State>(new StateRealScope(sc));
 		}else

@@ -1,7 +1,10 @@
 #include "scope.hpp"
 
 std::ostream& operator<<(std::ostream& out, const Scope& x) {
-    return out << x.data;
+    out << "@id=" << x.id << ":" << x.parent->id;
+	if(x.parent_macro!=ptr<Scope>::null) out << "::" << x.parent_macro->id;
+	out << "," << x.virtuals << x.nobrace << x.insular << "@<" << x.macros << ">" << x.data;
+	return out;
 }
 
 MName::MName() {}
@@ -23,7 +26,7 @@ std::ostream& operator<<(std::ostream& out, const Macros& x) {
         for(auto z = y.begin(); z != y.end(); z++) {
             if(!fst) out << ", ";
             fst = false;
-            out << z->first << "/" << i;
+            out << GetSymbol(z->first) << "/" << i;
         }
     }
     out << "}";
@@ -160,7 +163,11 @@ static ptr<Scope> getscope(const MSCOPE& x, ptr<Scope> cur) {
 
 ptr<Scope> Scope::halfclone(ptr<Scope> ths) {
     ptr<Scope> ret (new Scope(false));
-    ret->id = ths->id;
+//    ret->id = ths->id;
+    idmut.acquire();
+    ret->id = state_id++;
+    idmut.release();
+
     ret->insular = ths->insular;
     ret->virtuals = ths->virtuals;
     ret->nobrace = ths->nobrace;
@@ -332,17 +339,18 @@ static void merge(ptr<Scope> self, ptr<Macros> ret, ptr<Scope> parent) {
 ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
     self->macmut.acquire();
     if(self->macsinscope != ptr<Macros>::null) {
+//		std::cout << "macro list exists already : scopeid=" << self->id << "\n";
         self->macmut.release();
         return self->macsinscope;
     }
-
+//	std::cout << "gather macros : scopeid=" << self->id << "\n";
     //can we use parent macro set?
     if(self->macros.empty() && !self->hasrestricts) {
         if(self->parent != self) {
             self->macsinscope = Scope::macros_in_scope(self->parent);
 			if(self->parent_macro!=ptr<Scope>::null && self->parent_macro!=self)
 				merge(self,self->macsinscope,self->parent_macro);
-
+//			std::cout << "   early exits using parent for scopeid=" << self->id << " with parentid=" << self->parent->id << "\n";
             self->macmut.release();
             return self->macsinscope;
         }
@@ -371,6 +379,7 @@ ptr<Macros> Scope::macros_in_scope(ptr<Scope> self) {
         }
         if(empty) {
             self->macsinscope = ret;
+//			std::cout << "    early exits due to restrict set for scopeid=" << self->id << "\n";
             self->macmut.release();
             return self->macsinscope;
         }

@@ -119,7 +119,7 @@ dArgument::dArgument(int macroid, int cnt) {
 dArgument::dArgument() {}
 
 std::ostream& operator<<(std::ostream& out, const dArgument& x) {
-    return out << "!ARG!";
+    return out << "ARG[" << x.macroid << "," << x.cnt << "]";
 }
 
 //--------------------------------------------------------------------------------------------------

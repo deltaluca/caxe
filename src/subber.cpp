@@ -122,12 +122,11 @@ void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, p
 }
 
 void subs(ptr<Scope> cscope) {
-    while(!cscope->test.trylock())
-        std::cout << "???????\n";
     std::vector<ptr<State>> data;
+//	std::cout << "\nsubs\ncscope = " << cscope << "\n macros = " << Scope::macros_in_scope(cscope) << "\n\n";
     subs_data(data, cscope->data, Scope::macros_in_scope(cscope), cscope);
     cscope->data.swap(data);
-    cscope->test.release();
+//	std::cout << "subres = " << cscope << "\n\n";
 }
 
 //----------------------------------------------------

@@ -61,7 +61,7 @@ struct SubState : public State {
     SubState() {
         id = ID;
     }
-    std::ostream& print(std::ostream& out) const {
+    virtual std::ostream& print(std::ostream& out) const {
         return out << "(" << data << ")";
     }
 };
@@ -182,6 +182,13 @@ typedef SubState<sCall, std::vector<ptr<State>>> StateCall;
 int GetSymbol(const std::string&);
 std::string GetSymbol(int id);
 
-typedef SubState<sSymbol, int> StateSymbol;
+typedef SubState<sSymbol, int> rrStateSymbol;
+
+struct StateSymbol : public rrStateSymbol {
+	StateSymbol(int data) : rrStateSymbol(data) {}
+	std::ostream& print(std::ostream& out) const {
+		return rrStateSymbol::print(out) << "=" << GetSymbol(data);
+	}
+};
 
 #endif
