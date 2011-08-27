@@ -49,6 +49,7 @@ static std::vector<ptr<State>> concatenate(const std::vector<ptr<State>>& xs) {
                 ret.pop_back();
                 (*preident) = GetSymbol(GetSymbol(*preident) + y.data);
             }else {
+				preident = NULL;
                 if(precons)
                     ret.pop_back();
                 ret.push_back(x);
