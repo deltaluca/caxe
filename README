@@ -10,11 +10,39 @@ Syntax of caXe is an extension of haXe so all valid haXe code is valid caXe code
 
 caXe additionaly provides 3 symbolic macro types and an import statement extension.
 
+--------------------------------------- CONCATENATION
+
 Identifier concatenation is performed via the ` binary operator, this will only take effect if the result of the concatenation would be a valid identifier so:
 
 a`b //replaced by ab
 a`1 //replaced by a1
-1`a //replaced by 1`a
+1`a //replaced by 1 a (seperate tokens)
+
+multiple instances are ignored
+
+a`````b equivalent to a`b
+
+and noting that this is purely symbolic so whitespace is not important.
+
+a`
+
+b
+`
+
+1					`2
+
+get's replaced with ab12 as a single identifier
+
+Note, that ` inside of a String for instance will be ignored as it does not constitute a seperate token.
+
+--------------------------------------- STRING LITERALS
+
+Given any piece of caXe code you can create a string literal representing it with the $str(...) command
+
+for instance:
+
+$str(Hello) becomes "Hello"
+$str(a+{hi there}) becomes "a+{hi there}"
 
 --------------------------------------- IMPORT
 
