@@ -44,6 +44,21 @@ for instance:
 $str(Hello) becomes "Hello"
 $str(a+{hi there}) becomes "a+{hi there}"
 
+though you should not expect literal stringifications (haha word) as this is still done symbollicaly and so the output may not represent your exact input, for instance:
+
+$str(
+	a + {
+/* hi */
+hi
+there
+//}
+}
+)
+
+will also become: "a+{hi there}"
+
+There is no operation to combine strings, though ` may be used as a dual for this purpose at some point in the future if needs be. haXe compiler should do this already anyways!
+
 --------------------------------------- IMPORT
 
 In haXe as of writing there is no real way to do wildcard imports, caXe provides wildcard imports for all .cx files given as arguments. The syntax is:
@@ -64,6 +79,25 @@ A caxe mixin is roughly equivalent to a standard C-style macro, a call to a mixi
 
 $(mixin add(a,b) a+b);
 add(1,2); //replaced by 1+2;
+
+or with no arguments:
+
+$(mixin hello hi);
+hello; //replaced with hi;
+hellothere; //remains hellothere, remember caxe is symbolic not textual
+
+or if there is ambiguity in the parsing you may need to add an empty argument list.
+
+$(mixin ehm() trace("ehm"));
+ehm; //replaced with trace("ehm")
+
+note that in ehm(); the empty argument list is not swallowed and this would be replaced with trace("ehm")();
+
+zero-argument mixins are more dangerous but can be nice! in nape for instance I redefine many haxe keywords for instance:
+
+$(mixin global inline() #if !NAPE_NO_INLINE $inline #end);
+
+where the $ before inline prevents an infinitely recursive expansion from occuring (strict definitino of $ given later in doc).
 
 An expand macro is equivalent to a mixin, except that rather than the call being replaced with the expansion it is simply removed, and the set of unique expansions throughout the execution of caxe replaces the macro at it's definition.
 
@@ -107,6 +141,10 @@ $(expand genSet(T) class Set_`T {
 
 is an equivalent pair of macros functionally.
 
+--------------------------------------- ORDER OF EVALUATION
+
+arguments are evaluated in order before the macro is expanded from the inner most depth outwards.
+
 --------------------------------------- SCOPE
 
 All caxe macros are scoped logically with {} and () together with some caxe specific scoping mechanisms explained later ${} and $().
@@ -117,5 +155,133 @@ A macro can be given one of 5 scope modifiers:
     - global (macro visible to whole file, and the whole of whatever files imports this file)
     - object (macro visible to first logical scope: in normal usage this will correspond to whatever class you are in but beware that more complex use will not work this way)
     - method (macro visible to second logical scope: in normal usage this will correspond to whatever method you are in with same warning)
+
+for example:
+
+{
+    $(mixin add(a,b) a+b);
+	$(mixin file sub(a,b) a-b);
+    add(a,b); //becomes a+b
+	sub(a,b); //becomes a-b
+}
+add(a,b); //remains add(a,b)
+sub(a,b); //also becoems a-b
+
+------------------------------------- NESTING
+
+macros may be nested with the restriction that an inner macro may not be scoped outwith of it's parent. so realistically you may only nest local macros.
+
+for instance:
+
+$(mixin test(x)
+	$(mixin dbl(x) (x)*2);
+	dbl(x+3)
+);
+trace(test(10));
+
+becomes
+
+trace((10+3)*2);
+
+Note that the inner macro 'x' argument binds in preference to the outer macro 'x' argument.
+
+This can be handy to package macros together under a macro 'package' of sorts. for example:
+
+$(mixin global math(block)
+	block
+
+	$(mixin add(a,b) (a+b));
+	$(mixin sub(a,b) (a-b));
+);
+
+add(a,b);
+math(add(a,b));
+
+becomes:
+
+add(a,b);
+(a+b);
+
+------------------------------------ ARGUMENT NESTING
+
+Macros can also form part of the arguments to other macros for instance:
+
+$(mixin requires_hello(def)
+	def
+
+	hello(10)
+);
+
+requires_hello($(mixin hello(x) x*x));
+
+becomes:
+
+10*10;
+
+You can also form an anonymous ('ish) macro as follows:
+
+$(mixin apply(x,y) x(y));
+
+apply($(mixin dbl(x) x*2) dbl, 10);
+
+becomes
+
+10*2;
+
+noting that the name of the anonymous macro follows it's definition in the argument.
+
+When using this anonymous form, the local scope is also captured so that the following is possible:
+
+{
+	$(mixin abe(x) x);
+	mix($(mixin bee(x) abe(x)) bee);
+}
+$(mixin mix(x) x(10));
+
+becomes
+
+{
+	10;
+}
+
+even though the mix macro itself has no view of the abe macro.
+Note that in this example, the eager evaluation of arguments does not apply, and abe(x) in the bee macro is not expanded until the x(10) part of mix has been evaluated.
+
+------------------------------------------- CAXE MACRO SCOPES
+
+caxe provides three additional scoping mechanisms:
+
+$(macros -> code);
+${macros -> code);
+
+where 'macros' is a comma delimited list of macro identifiers (including argument count, optional if there are no arguments). This list of macros defines a filter on what macros are visible to the enclosed code.
+where $() is a purely virtual, and ${} will actually generate {} in the resulting code.
+
+for example:
+
+$(mixin add(a,b) (a+b));
+$(mixin sub(a,b) (a-b));
+
+$(add/2 -> add(a,b)-sub(a,b));
+${->
+	add(a,b)-sub(a,b);
+}
+
+becomes:
+
+(a+b)-sub(a,b);
+{
+	add(a,b)-sub(a,b);
+}
+
+when a mixin takes no arguments, the '/0' in the mixin list is optional.
+
+The third type is purely syntactic sugar:
+
+$identifier
+
+being equivalent to:
+
+$(->identifier)
 
 
