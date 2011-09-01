@@ -155,7 +155,14 @@ void writer::print(std::ostream& out, ptr<State> x) {
         if(nl) out << (lines ? "\n" : "") << tab;
         if(pre && !nl && spaces) out << " ";
         nl = false;
-        out << y.data;
+		if(!lines) {//$str()
+			for(int i = 0; i<y.data.size(); i++) {
+				char c = y.data.at(i);
+				if(c=='"') out << "\\\"";
+				else out << c;
+			}
+		}else
+	        out << y.data;
         pre = true;
 
     }else if(x->id==sNumber) {
