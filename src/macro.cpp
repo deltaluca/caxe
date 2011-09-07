@@ -173,7 +173,6 @@ ptr<State> Macro::instantiate(ptr<Macro> self, const std::vector<ptr<State>>& ar
 //	std::cout << "\nMacro::instantiate " << GetSymbol(self->name) << "/" << self->argc << "\n";
 //	std::cout << "args = " << args << std::endl;
 //	std::cout << "cscope = " << cscope << std::endl;
-
 	if(self->type==mMixin) {
 		auto sc = instScope(self, self->scope, args, self->scope->parent);
 		sc->parent_macro = self->scope->parent_macro;
