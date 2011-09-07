@@ -148,7 +148,6 @@ size_t Subber::run() {
         }
         ptr<MFile> mfile = *((*ite)++);
         sublock.release();
-
         subs(mfile->scope);
     }
 

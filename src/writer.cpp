@@ -155,7 +155,15 @@ void writer::print(std::ostream& out, ptr<State> x) {
         if(nl) out << (lines ? "\n" : "") << tab;
         if(pre && !nl && spaces) out << " ";
         nl = false;
-        out << y.data;
+	if(lines)
+	        out << y.data;
+	else {
+		for(int i = 0; i<y.data.size(); i++) {
+			char ch = y.data.at(i);
+			if(ch=='\"') out << "\\\"";
+			else out << ch;
+		}
+	}
         pre = true;
 
     }else if(x->id==sNumber) {
@@ -230,19 +238,20 @@ void writer::print(std::ostream& out, ptr<State> x) {
 
     }else if(x->id==sString) {
         StateString& y = (StateString&) *x;
-        if(nl) out << (lines ? "\n" : "") << tab;
-        out << "\"";
-        pre = false;
-        nl = false;
-        std::string pretab = tab;
-        tab = "";
-		lines = false;
-        print(out,y.data);
-		lines = true;
-        tab = pretab;
-        out << "\"";
-        nl = pre = false;
-
+	if(lines) {
+	        if(nl) out << (lines ? "\n" : "") << tab;
+	        out << "\"";
+        	pre = false;
+		        nl = false;
+	        std::string pretab = tab;
+	        tab = "";
+			lines = false;
+	        print(out,y.data);
+			lines = true;
+	        tab = pretab;
+	        out << "\"";
+	        nl = pre = false;
+	}else out << "$str(???)";
     } else {
         out << "!!{" << x->id << "}!!";
     }

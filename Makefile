@@ -15,7 +15,7 @@ OBJ = obj
 BIN = bin
 EXEC = caxe
 
-CXX = g++
+CXX = /data/luca/gcc-4.6.1-inst/bin/g++-4.6.1
 CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
 OP = -Ofast \
   -fmerge-all-constants \
