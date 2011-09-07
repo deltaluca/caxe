@@ -141,6 +141,8 @@ $(expand genSet(T) class Set_`T {
 
 is an equivalent pair of macros functionally.
 
+the define macro finds it's best use when creating generic types/functions where haXe's type system can often be lacking (like having to pass a function reference so that we can construct the generic from within the class etc) of course debugging code becomes somewhat harder since the compilation errors occur after the translation to haxe and not during.
+
 --------------------------------------- ORDER OF EVALUATION
 
 arguments are evaluated in order before the macro is expanded from the inner most depth outwards.

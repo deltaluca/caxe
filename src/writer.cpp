@@ -237,19 +237,20 @@ void writer::print(std::ostream& out, ptr<State> x) {
 
     }else if(x->id==sString) {
         StateString& y = (StateString&) *x;
-        if(nl) out << (lines ? "\n" : "") << tab;
-        out << "\"";
-        pre = false;
-        nl = false;
-        std::string pretab = tab;
-        tab = "";
-		lines = false;
-        print(out,y.data);
-		lines = true;
-        tab = pretab;
-        out << "\"";
-        nl = pre = false;
-
+	if(lines) {
+	        if(nl) out << (lines ? "\n" : "") << tab;
+	        out << "\"";
+        	pre = false;
+		        nl = false;
+	        std::string pretab = tab;
+	        tab = "";
+			lines = false;
+	        print(out,y.data);
+			lines = true;
+	        tab = pretab;
+	        out << "\"";
+	        nl = pre = false;
+	}else out << "$str(???)";
     } else {
         out << "!!{" << x->id << "}!!";
     }

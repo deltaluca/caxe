@@ -15,7 +15,7 @@ OBJ = obj
 BIN = bin
 EXEC = caxe
 
-CXX = g++
+CXX = g++ 
 CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
 OP = -Ofast \
   -fmerge-all-constants \
