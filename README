@@ -1,6 +1,6 @@
-To compile, requires hlex and hllr.
+To compile requires nothing extra, requires hlex and hllr for boot-strapping.
 
-them simply invoke the makefile, making sure that $HLEX_ROOT and $HLLR_ROOT are correctly set up.
+them simply invoke the makefile, making sure that $HLEX_ROOT and $HLLR_ROOT are correctly set up if boot-strapping.
 
 To execute caxe under windows, you will need to add lib/win to your PATH variable for POSIX threads.
 
