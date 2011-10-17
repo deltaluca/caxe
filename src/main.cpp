@@ -37,8 +37,9 @@ int main(int argc, char* argv[]) {
     }
 
     //-----------------------------------------------------------------
-
+#ifndef WINDOWS
     bool __times = false;
+#endif
 
     bool _out = false;
     std::string out;
@@ -72,7 +73,9 @@ int main(int argc, char* argv[]) {
 
     //-----------------------------------------------------------------
 
+#ifndef WINDOWS
     struct timespec clk; clock_gettime(CLOCK_MONOTONIC, &clk);
+#endif
 
     //-----------------------------------------------------------------
 
@@ -104,7 +107,9 @@ int main(int argc, char* argv[]) {
     delete [] lexers;
     delete [] parsers;
     
+#ifndef WINDOWS
     struct timespec flpclk; clock_gettime(CLOCK_MONOTONIC, &flpclk);
+#endif
 
     //-----------------------------------------------------------------
 
@@ -123,7 +128,9 @@ int main(int argc, char* argv[]) {
 
     delete [] ans;
 
+#ifndef WINDOWS
     struct timespec ansclk; clock_gettime(CLOCK_MONOTONIC, &ansclk);
+#endif
 
     //-----------------------------------------------------------------
 
@@ -160,7 +167,9 @@ int main(int argc, char* argv[]) {
 
     delete [] sub;
 
+#ifndef WINDOWS
     struct timespec subclk; clock_gettime(CLOCK_MONOTONIC, &subclk);
+#endif
 
     //-----------------------------------------------------------------
 
@@ -179,10 +188,13 @@ int main(int argc, char* argv[]) {
         }
     }
 
+#ifndef WINDOWS
     struct timespec fclk; clock_gettime(CLOCK_MONOTONIC, &fclk);
+#endif
 
     //-----------------------------------------------------------------
 
+#ifndef WINDOWS
     if(__times) {
         struct timespec curclk; clock_gettime(CLOCK_MONOTONIC, &curclk);
         double dt  = double(curclk.tv_sec - clk.tv_sec)    + double(curclk.tv_nsec - clk.tv_nsec   )*1e-9;
@@ -198,6 +210,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\tmacro sub: " << dt3 << "s\n";
         if(_out) std::cout << "\tun-parse:  " << dt4 << "s\n";
     }
+#endif
 
     //-----------------------------------------------------------------
 

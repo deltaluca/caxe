@@ -3,6 +3,7 @@ default:
 	@echo "CAXE Makefile"
 	@echo "---------------"
 	@echo "  To compile caxe; use target 'caxe'"
+	@echo "     (add WINDOWS=true for windows compilation using mingw)"
 	@echo "  To clean; use target 'clean'"
 	@echo "  To create caxe tar; use target 'tar'"
 	@echo "  To compile lexer/parser; use target 'bootstrap'"
@@ -15,8 +16,12 @@ OBJ = obj
 BIN = bin
 EXEC = caxe
 
-CXX = g++ 
-CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
+CXX = g++
+ifeq ($(WINDOWS),true)
+	CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL) -D WINDOWS
+else
+	CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
+endif
 OP = -Ofast \
   -fmerge-all-constants \
   -fmodulo-sched \
@@ -59,7 +64,11 @@ LEXEROP = -falign-functions\
   -fvpt\
   -funroll-all-loops
 
-LFLAGS = -lpthread -lrt
+ifeq ($(WINDOWS),true)
+	LFLAGS = -lpthread
+else
+	LFLAGS = -lpthread -lrt
+endif
 
 _OBJS = main.o \
 	anal.o \
