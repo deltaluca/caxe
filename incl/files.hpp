@@ -45,7 +45,10 @@ void cdir(const std::string& dir) {
                 else continue;
             }
 
-            if(mkdir(dir.c_str(),0777)!=0) {
+            if(mkdir(dir.c_str() #ifndef WINDOWS
+	    	,0777
+	    #endif
+	    )!=0) {
                 dirs.push(dir);
 
                 size_t c1 = dir.find_last_of('/');
