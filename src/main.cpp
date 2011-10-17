@@ -51,8 +51,11 @@ int main(int argc, char* argv[]) {
         if(arg.compare("-tc")==0) {
             if(i+1<argc) _threadcnt = atoi(argv[++i]);
             else std::cout << "-tc expected integer argument\n";
-        }else if(arg.compare("--times")==0) __times = true;
-        else if(arg.compare("-o")==0) {
+        }else if(arg.compare("--times")==0) {
+#ifndef WINDOWS
+		__times = true;
+#endif
+	}else if(arg.compare("-o")==0) {
             if(i+1<argc) {
                 out = std::string(argv[++i]);
                 _out = true;
