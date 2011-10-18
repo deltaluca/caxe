@@ -166,14 +166,14 @@ inline int __atomic_dec(COUNTER* val) {
 #ifdef WINDOWS
 	return InterlockedDecrement(val);
 #else
-	return __sync_sub_and_fetch(count, 1)
+	return __sync_sub_and_fetch(val, 1);
 #endif
 }
 inline void __atomic_inc(COUNTER* val) {
 #ifdef WINDOWS
 	InterlockedIncrement(val);
 #else
-	__sync_add_and_fetch(count, 1);
+	__sync_add_and_fetch(val, 1);
 #endif
 }
 
