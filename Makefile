@@ -16,7 +16,7 @@ OBJ = obj
 BIN = bin
 EXEC = caxe
 
-CXX = g++
+CXX = g++-4.6.1
 ifeq ($(WINDOWS),true)
 	CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL) -D WINDOWS
 else
