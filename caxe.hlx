@@ -1,53 +1,46 @@
 //for c++ hlex
 
-NULL 10 : ~/((/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)+|[ \n\r\t]+)+/~
-
--1 : /*ident  :=*/ ~/[a-zA-Z_][a-zA-Z_0-9]*/~ := %{ retval = GetSymbol(%); %}
--1 : /*string :=*/ ~/("([^\\"\r\n]|\\.)*")|('([^\\'\r\n]|\\.)*')/~ := %{ retval = %; %}
--1 : /*regexp :=*/ ~/~/([^\\/\r\n]|\\.)*/[igmsu]*/~ := %{ retval = %; %}
--1 : /*integer :=*/ ~/([0-9]+)|(0x[0-9a-fA-F]+)|([0-9]+[eE][0-9]+)/~ := %{ retval = %; %}
--2 : /*floater :=*/ ~/(([0-9]+)|([0-9]*\.[0-9]+))([eE][\+\-]?[0-9]+)?/~ := %{ retval = %; %}
-
-error := %{ %; %}
-
- 0 : /*mscope  :=*/ ~/$\{/~
- 0 : /*mbrack  :=*/ ~/$\(/~
-
- 0 : /*lbrace :=*/ ~/\{/~
- 0 : /*rbrace :=*/ ~/\}/~
- 0 : /*lparen :=*/ ~/\(/~
- 0 : /*rparen :=*/ ~/\)/~
- 0 : /*comma  :=*/ ~/,/~
- 0 : /*dot    :=*/ ~/\./~
- 0 : /*semi   :=*/ ~/;/~
- 0 : /*arrow  :=*/ ~/\-\>/~
- 0 : /*slash  :=*/ ~/\//~
- 0 : /*dollar :=*/ ~/$/~
-
- 0 : /*cons   :=*/ ~/`/~
-
- 0 : /*package :=*/ ~/package/~
- 0 : /*import  :=*/ ~/import/~
-
- 0 : /*define :=*/ ~/define/~
- 0 : /*mixin  :=*/ ~/mixin/~
- 0 : /*expand :=*/ ~/expand/~
- 0 : /*str    :=*/ ~/str/~
-
- 0 : /*global :=*/ ~/global/~
- 0 : /*file   :=*/ ~/file/~
- 0 : /*local  :=*/ ~/local/~
- 0 : /*object :=*/ ~/object/~
- 0 : /*method :=*/ ~/method/~
- 
 %{
     #include <parser_obj.hpp>
+	#include <token.hpp>
 %}
-/*
-attr(ident)   := %{ retval = GetSymbol(%); %}
-attr(string)  := %{ retval = %; %}
-attr(regexp)  := %{ retval = %; %}
-attr(integer) := %{ retval = %; %}
-attr(floater) := %{ retval = %; %}
 
-error : noise*/
+NULL 10 : ~/((/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)+|[ \n\r\t]+)+/~
+
+-1 : ~/[a-zA-Z_][a-zA-Z_0-9]*/~                          := %{ retval = new Token(tIdent,GetSymbol(%)); %}
+-1 : ~/("([^\\"\r\n]|\\.)*")|('([^\\'\r\n]|\\.)*')/~     := %{ retval = new Token(tString,%); %}
+-1 : ~/~/([^\\/\r\n]|\\.)*/[igmsu]*/~                    := %{ retval = new Token(tRegExp,%); %}
+-1 : ~/([0-9]+)|(0x[0-9a-fA-F]+)|([0-9]+[eE][0-9]+)/~    := %{ retval = new Token(tInteger,%); %}
+-2 : ~/(([0-9]+)|([0-9]*\.[0-9]+))([eE][\+\-]?[0-9]+)?/~ := %{ retval = new Token(tFloater,%); %}
+
+error := %{ retval = new Token(tNoise,%); %}
+
+~/$\{/~ := %{ retval = new Token(tMScope); %}
+~/$\(/~ := %{ retval = new Token(tMBrack); %}
+
+~/\{/~   := %{ retval = new Token(tLBrace); %}
+~/\}/~   := %{ retval = new Token(tRBrace); %}
+~/\(/~   := %{ retval = new Token(tLParen); %}
+~/\)/~   := %{ retval = new Token(tRParen); %}
+~/,/~    := %{ retval = new Token(tComma);  %}
+~/\./~   := %{ retval = new Token(tDot);    %}
+~/;/~    := %{ retval = new Token(tSemi);   %}
+~/\-\>/~ := %{ retval = new Token(tArrow);  %}
+~/\//~   := %{ retval = new Token(tSlash);  %}
+~/$/~    := %{ retval = new Token(tDollar); %}
+
+~/`/~ := %{ retval = new Token(tCons); %}
+
+~/package/~ := %{ retval = new Token(tPackage); %}
+~/import/~  := %{ retval = new Token(tImport);  %}
+
+~/define/~ := %{ retval = new Token(tDefine); %}
+~/mixin/~  := %{ retval = new Token(tMixin);  %}
+~/expand/~ := %{ retval = new Token(tExpand); %}
+~/str/~    := %{ retval = new Token(tStr);    %}
+
+~/global/~ := %{ retval = new Token(tGlobal); %}
+~/file/~   := %{ retval = new Token(tFile);   %}
+~/local/~  := %{ retval = new Token(tLocal);  %}
+~/object/~ := %{ retval = new Token(tObject); %}
+~/method/~ := %{ retval = new Token(tMethod); %}

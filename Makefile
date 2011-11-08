@@ -13,10 +13,10 @@ default:
 INCL = incl
 SRC = src
 OBJ = obj
-BIN = bin
-EXEC = caxe
+BIN = bin-tmp
+EXEC = caxe-tmp
 
-CXX = g++-4.6.1
+CXX = g++
 ifeq ($(WINDOWS),true)
 	CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL) -D WINDOWS
 else
@@ -79,7 +79,8 @@ _OBJS = main.o \
 	scope.o \
 	subber.o \
 	caxe_util.o \
-	writer.o
+	writer.o \
+	token.o
 
 OBJS= $(_OBJS:%.o=$(OBJ)/%.o)
 
@@ -110,8 +111,8 @@ bootstrap:
 	@echo "-------------"
 	@echo "compiling lexer/parser"
 	@echo "-------------"
-	hlex caxe.hlx -c++ lexer
-	hllr caxe.hlr parse -c++ -hlex lexer -lalr1
+	hlex caxe.hlx -c++ lexer -token Token -tokenincl token.hpp
+	hllr caxe.hlr parse -c++ -hlex lexer -lalr1 -token Token
 	mv lexer.cpp src/ && mv lexer.hpp incl/
 	mv parse.cpp src/ && mv parse.hpp incl/
 

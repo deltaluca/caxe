@@ -8,6 +8,7 @@
 %token CONS
 %token PACKAGE IMPORT DEFINE MIXIN EXPAND STR
 %token GLOBAL FILE LOCAL OBJECT METHOD
+%token NOISE
 
 %{
     #include <parser_obj.hpp>
@@ -38,6 +39,13 @@
 
 %entry file
 
+%ident %{ int %} : IDENT %{ retval = ((Token&)%0).int_data; %} ;
+%string %{ std::string %} : STRING %{ retval = ((Token&)%0).string_data; %} ;
+%regexp %{ std::string %} : REGEXP %{ retval = ((Token&)%0).string_data; %} ;
+%integer %{ std::string %} : INTEGER %{ retval = ((Token&)%0).string_data; %} ;
+%floater %{ std::string %} : FLOATER %{ retval = ((Token&)%0).string_data; %} ;
+%noise   %{ std::string %} : NOISE %{ retval = ((Token&)%0).string_data; %} ;
+
 %file %{ Dynamic %}
     : restex PACKAGE SEMI restex %{
         States& x = (States&)%0;
@@ -54,14 +62,14 @@
 ;
 
 %qname %{ Dynamic %}
-    : qname DOT IDENT %{
+    : qname DOT ident %{
         std::string& x = (std::string&)%0;
         x.append(".");
 //        x.append((std::string)%2);
 	x.append(GetSymbol(%2.cast<int>()));
         retval = %0;
     %}
-    | IDENT %{
+    | ident %{
         retval = GetSymbol(%0.cast<int>());
     %}
 ;
@@ -89,8 +97,8 @@
 ;
 
 %state %{ Dynamic %}
-    : ERROR %{ retval = StateNoise((std::string&)%0); %}
-    | IDENT %{ retval = StateSymbol(%0.cast<int>()); %}
+    : noise %{ retval = StateNoise((std::string&)%0); %}
+    | ident %{ retval = StateSymbol(%0.cast<int>()); %}
     | CONS  %{ retval = StateCons(); %}
     | DOT   %{ retval = StateNoise("."); %}
     | SEMI  %{ retval = StateNoise(";"); %}
@@ -98,7 +106,7 @@
     | ARROW %{ retval = StateNoise("->"); %}
 
     | DOLL %{ retval = StateNoise("$"); %}
-    | DOLL IDENT %{
+    | DOLL ident %{
         States list;
         list.push_back(ptr<State>(StateSymbol(%1.cast<int>())));
         retval = StateMBrack(dMScopeBrack(list));
@@ -107,10 +115,10 @@
         retval = StateString(ptr<State>(new StateArgScope((States&)%3)));
     %}
 
-    | STRING  %{ retval = StateDatum((std::string&)%0); %}
-    | REGEXP  %{ retval = StateDatum((std::string&)%0); %}
-    | INTEGER %{ retval = StateNumber((std::string&)%0); %}
-    | FLOATER %{ retval = StateNumber((std::string&)%0); %}
+    | string  %{ retval = StateDatum((std::string&)%0); %}
+    | regexp  %{ retval = StateDatum((std::string&)%0); %}
+    | integer %{ retval = StateNumber((std::string&)%0); %}
+    | floater %{ retval = StateNumber((std::string&)%0); %}
 
     | IMPORT qname semi %{ retval = StateImport((std::string&)%1); %}
 
@@ -152,7 +160,7 @@
     %}
 
 
-    | MBRACK EXPAND access IDENT LPAREN eargs RPAREN restex RPAREN semi %{
+    | MBRACK EXPAND access ident LPAREN eargs RPAREN restex RPAREN semi %{
         retval = StateExpand(dMacro((MSCOPE&)%2, %3.cast<int>(), (std::vector</*Symbol*/int>&)%5, (States&)%7));
     %}
 
@@ -187,8 +195,8 @@
 ;
 
 %mscopei %{ Dynamic %}
-    : IDENT %{ retval = MIdent(%0.cast<int>(),0); %}
-    | IDENT SLASH INTEGER %{
+    : ident %{ retval = MIdent(%0.cast<int>(),0); %}
+    | ident SLASH integer %{
         retval = MIdent(%0.cast<int>(), atoi(((std::string&)%2).c_str()));
     %}
 ;
@@ -217,12 +225,12 @@
 ;
 
 %eargs2 %{ Dynamic %}
-    : eargs2 COMMA IDENT %{
+    : eargs2 COMMA ident %{
         std::vector<int>& x = (std::vector<int>&)%0;
         x.push_back(%2.cast<int>());
         retval = %0;
     %}
-    | IDENT %{
+    | ident %{
         std::vector<int> x;
         x.push_back(%0.cast<int>());
         retval = x;
@@ -239,22 +247,22 @@
 ;
 
 %pre %{ Dynamic %}
-    : IDENT %{
+    : ident %{
         States x;
         x.push_back(ptr<State>(StateSymbol(%0.cast<int>())));
         retval = x;
     %}
-    | ERROR %{
+    | noise %{
         States x;
         x.push_back(ptr<State>(StateNoise((std::string&)%0)));
         retval = x;
     %}
-    | pre ERROR %{
+    | pre noise %{
         States& x = (States&) %0;
         x.push_back(ptr<State>(StateNoise((std::string&)%1)));
         retval = %0;
     %}
-    | pre IDENT %{
+    | pre ident %{
         States& x = (States&) %0;
         x.push_back(ptr<State>(StateSymbol(%1.cast<int>())));
         retval = %0;
@@ -262,10 +270,10 @@
 ;
 
 %rmixin %{ Dynamic %}
-    : IDENT LPAREN eargs RPAREN restex RPAREN semi %{
+    : ident LPAREN eargs RPAREN restex RPAREN semi %{
         retval = RMIXIN(%0.cast<int>(), (std::vector<int>&)%2, (States&)%4);
     %}
-    | IDENT restex RPAREN semi %{
+    | ident restex RPAREN semi %{
         retval = RMIXIN(%0.cast<int>(), (States&)%1);
     %}
 ;

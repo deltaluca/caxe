@@ -5,148 +5,145 @@
 #include <cstdlib>
 #include <iostream>
 #include <caxe_util.hpp>
+#include <token.hpp>
 
     #include <parser_obj.hpp>
+	#include <token.hpp>
 
-TOKEN::TOKEN() {}
-TOKEN::TOKEN(char id) { this->id = id; }
-TOKEN::TOKEN(char id, const Dynamic& data) { this->id = id; this->data = data; }
-std::ostream& operator<<(std::ostream& out, const TOKEN& x) {
-	return out << "{" << (int)x.id << ", " << x.data << "}";
-}
 Lexer::Lexer() {}
-void Lexer::init(tsDeque<std::string>& files, tsDeque<ptr<TOKEN> >& tokens) {
+void Lexer::init(tsDeque<std::string>& files, tsDeque<ptr<Token> >& tokens) {
 	this->files = files;
 	this->tokens = tokens;
 }
 struct Transition {
 	short state;
 	char flags;
-	union { ptr<TOKEN> (*token)(const std::string&); char id; };
+	union { ptr<Token> (*token)(const std::string&); char id; };
 	Transition() { state = -1; flags = 0; token = NULL; }
-	Transition(short a, char b, ptr<TOKEN>(*c)(const std::string&)) { state = a; flags = b; token = c; }
+	Transition(short a, char b, ptr<Token>(*c)(const std::string&)) { state = a; flags = b; token = c; }
 	Transition(short a, char b) { state = a; flags = b; token = NULL; }
 	Transition(short a, char b, char c) { state = a; flags = b; id = c; }
 };
-ptr<TOKEN> token_UNIQUE_1(const std::string& valstr) {
-	Dynamic retval;
-	 retval = GetSymbol( valstr ); 	return ptr<TOKEN>(new TOKEN(0,retval));
+ptr<Token> token_UNIQUE_1(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tIdent,GetSymbol( valstr )); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_2(const std::string& valstr) {
-	Dynamic retval;
-	 retval =  valstr ; 	return ptr<TOKEN>(new TOKEN(1,retval));
+ptr<Token> token_UNIQUE_2(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tString, valstr ); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_3(const std::string& valstr) {
-	Dynamic retval;
-	 retval =  valstr ; 	return ptr<TOKEN>(new TOKEN(2,retval));
+ptr<Token> token_UNIQUE_3(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tRegExp, valstr ); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_4(const std::string& valstr) {
-	Dynamic retval;
-	 retval =  valstr ; 	return ptr<TOKEN>(new TOKEN(3,retval));
+ptr<Token> token_UNIQUE_4(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tInteger, valstr ); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_5(const std::string& valstr) {
-	Dynamic retval;
-	 retval =  valstr ; 	return ptr<TOKEN>(new TOKEN(4,retval));
+ptr<Token> token_UNIQUE_5(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tFloater, valstr ); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_6(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(5,retval));
+ptr<Token> token_UNIQUE_6(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tMScope); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_7(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(6,retval));
+ptr<Token> token_UNIQUE_7(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tMBrack); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_8(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(7,retval));
+ptr<Token> token_UNIQUE_8(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tLBrace); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_9(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(8,retval));
+ptr<Token> token_UNIQUE_9(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tRBrace); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_10(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(9,retval));
+ptr<Token> token_UNIQUE_10(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tLParen); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_11(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(10,retval));
+ptr<Token> token_UNIQUE_11(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tRParen); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_12(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(11,retval));
+ptr<Token> token_UNIQUE_12(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tComma);  	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_13(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(12,retval));
+ptr<Token> token_UNIQUE_13(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tDot);    	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_14(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(13,retval));
+ptr<Token> token_UNIQUE_14(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tSemi);   	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_15(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(14,retval));
+ptr<Token> token_UNIQUE_15(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tArrow);  	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_16(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(15,retval));
+ptr<Token> token_UNIQUE_16(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tSlash);  	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_17(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(16,retval));
+ptr<Token> token_UNIQUE_17(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tDollar); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_18(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(17,retval));
+ptr<Token> token_UNIQUE_18(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tCons); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_19(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(18,retval));
+ptr<Token> token_UNIQUE_19(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tPackage); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_20(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(19,retval));
+ptr<Token> token_UNIQUE_20(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tImport);  	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_21(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(20,retval));
+ptr<Token> token_UNIQUE_21(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tDefine); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_22(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(21,retval));
+ptr<Token> token_UNIQUE_22(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tMixin);  	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_23(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(22,retval));
+ptr<Token> token_UNIQUE_23(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tExpand); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_24(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(23,retval));
+ptr<Token> token_UNIQUE_24(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tStr);    	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_25(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(24,retval));
+ptr<Token> token_UNIQUE_25(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tGlobal); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_26(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(25,retval));
+ptr<Token> token_UNIQUE_26(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tFile);   	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_27(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(26,retval));
+ptr<Token> token_UNIQUE_27(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tLocal);  	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_28(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(27,retval));
+ptr<Token> token_UNIQUE_28(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tObject); 	return ptr<Token>(retval);
 }
-ptr<TOKEN> token_UNIQUE_29(const std::string& valstr) {
-	Dynamic retval;
-		return ptr<TOKEN>(new TOKEN(28,retval));
+ptr<Token> token_UNIQUE_29(const std::string& valstr) {
+	Token* retval;
+	 retval = new Token(tMethod); 	return ptr<Token>(retval);
 }
-void err_token(ref<tsDeque<ptr<TOKEN> > >& tokens, std::string& errstr) {
+void err_token(ref<tsDeque<ptr<Token> > >& tokens, std::string& errstr) {
 	if(errstr.length()!=0) {
-		tokens->push(ptr<TOKEN>(new TOKEN(-1,Dynamic(errstr))));
+		Token* retval;
+	 retval = new Token(tNoise, errstr ); 		tokens->push(ptr<Token>(retval));
 		errstr.clear();
 	}
 }
@@ -275,16 +272,19 @@ size_t Lexer::run() {
 		if(filepath.compare("hlex_eos")==0) break;
 		else lexfile(filepath,&file,psize);
 	}
-	tokens->push(ptr<TOKEN>(new TOKEN(-3)));
+//	tokens->push(ptr<Token>(new TOKEN(-3)));
+	tokens->push(TOKEOS());
 	return 0;
 }
 
 void Lexer::lexfile(const std::string& addr, char** file, int& psize) {
-	tokens->push(ptr<TOKEN>(new TOKEN(-4,Dynamic(addr))));
+//	tokens->push(ptr<TOKEN>(new TOKEN(-4,Dynamic(addr))));
+	tokens->push(TOKSOF(addr));
 	
 	FILE* fp = fopen(addr.c_str(),"rb");
 	if(fp==NULL) {
-		tokens->push(ptr<TOKEN>(new TOKEN(-2)));
+//		tokens->push(ptr<TOKEN>(new TOKEN(-2)));
+		tokens->push(TOKEOF());
 		return;
 	}
 	
@@ -326,15 +326,15 @@ void Lexer::lexfile(const std::string& addr, char** file, int& psize) {
 				err_token(tokens,errstr);
 				
 				if(attr->flags&2) {
-					if(attr->flags&4) {
+//					if(attr->flags&4) {
 						pos = ipos;
 						valstr.clear();
 						while(valcnt-->0) valstr.push_back(*(pos++));
 						tokens->push((*(attr->token))(valstr));
-					}else {
-						tokens->push(ptr<TOKEN>(new TOKEN(attr->id)));
-						pos = ipos+valcnt;
-					}
+//					}else {
+//						tokens->push(ptr<TOKEN>(new TOKEN(attr->id)));
+//						pos = ipos+valcnt;
+//					}
 				}else pos = ipos+valcnt;
 			}
 			errstate = !valid;
@@ -360,15 +360,15 @@ void Lexer::lexfile(const std::string& addr, char** file, int& psize) {
 				err_token(tokens,errstr);
 				
 				if(attr->flags&2) {
-					if(attr->flags&4) {
+//					if(attr->flags&4) {
 						pos = ipos;
 						valstr.clear();
 						while(valcnt-->0) valstr.push_back(*(pos++));
 						tokens->push((*(attr->token))(valstr));
-					}else {
-						tokens->push(ptr<TOKEN>(new TOKEN(attr->id)));
-						pos = ipos+valcnt;
-					}
+//					}else {
+//						tokens->push(ptr<TOKEN>(new TOKEN(attr->id)));
+//						pos = ipos+valcnt;
+//					}
 				}else pos = ipos+valcnt;
 			}
 			errstate = !valid;
@@ -388,17 +388,18 @@ void Lexer::lexfile(const std::string& addr, char** file, int& psize) {
 			err_token(tokens,errstr);
 			
 			if(attr->flags&2) {
-				if(attr->flags&4) {
+//				if(attr->flags&4) {
 					pos = ipos;
 					valstr.clear();
 					while(valcnt-->0) valstr.push_back(*(pos++));
 					tokens->push((*(attr->token))(valstr));
-				}else
-					tokens->push(ptr<TOKEN>(new TOKEN(attr->id)));
+//				}else
+//					tokens->push(ptr<TOKEN>(new TOKEN(attr->id)));
 			}
 		}
 	}
 	
 	err_token(tokens,errstr);
-	tokens->push(ptr<TOKEN>(new TOKEN(-2)));
+//	tokens->push(ptr<TOKEN>(new TOKEN(-2)));
+	tokens->push(TOKEOF());
 }

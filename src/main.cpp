@@ -15,6 +15,7 @@
 #include <time.h>
 #include <vector>
 #include <iostream>
+#include <token.hpp>
 
 int _threadcnt = 1;
 
@@ -86,7 +87,7 @@ int main(int argc, char* argv[]) {
 
     tsDeque<std::string> files;
 
-    tsDeque<ptr<TOKEN>>* token_streams = new tsDeque<ptr<TOKEN>>[lpcnt];
+    tsDeque<ptr<Token>>* token_streams = new tsDeque<ptr<Token>>[lpcnt];
     Lexer* lexers = new Lexer[lpcnt];
     Parser* parsers = new Parser[lpcnt];
     tsDeque<ParserResult> results;
