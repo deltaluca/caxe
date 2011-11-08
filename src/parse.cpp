@@ -84,7 +84,7 @@ void R6(std::vector<Dynamic>& __ret) {
 Dynamic hllr__2 = __ret.back(); __ret.pop_back();
 Dynamic hllr__1 = __ret.back(); __ret.pop_back();
  Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
-	 ptr<Program>  retval;
+	 Dynamic  retval;
 
         States& x = (States&)hllr__0;
         States& y = (States&)hllr__3;
@@ -100,7 +100,7 @@ Dynamic hllr__3 = __ret.back(); __ret.pop_back();
  Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
 Dynamic hllr__1 = __ret.back(); __ret.pop_back();
  Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
-	 ptr<Program>  retval;
+	 Dynamic  retval;
 
         retval = Program((std::string&)hllr__2,(States&)hllr__4);
     
@@ -109,7 +109,7 @@ Dynamic hllr__1 = __ret.back(); __ret.pop_back();
 void R8(std::vector<Dynamic>& __ret) {
 	//arguments
  Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
-	 ptr<Program>  retval;
+	 Dynamic  retval;
 
         retval = Program("",(States&)hllr__0);
     
@@ -782,7 +782,7 @@ Dynamic hllr__2 = __ret.back(); __ret.pop_back();
 static const RULE rules[] = {{R0, 33, 1},{R1, 34, 1},{R2, 35, 1},{R3, 36, 1},{R4, 37, 1},{R5, 38, 1},{R6, 32, 4},{R7, 32, 5},{R8, 32, 1},{R9, 40, 3},{R10, 40, 1},{R11, 41, 2},{R12, 41, 0},{R13, 39, 2},{R14, 39, 0},{R15, 42, 1},{R16, 42, 1},{R17, 42, 1},{R18, 42, 1},{R19, 42, 1},{R20, 42, 1},{R21, 42, 1},{R22, 42, 1},{R23, 42, 2},{R24, 42, 5},{R25, 42, 1},{R26, 42, 1},{R27, 42, 1},{R28, 42, 1},{R29, 42, 3},{R30, 42, 3},{R31, 42, 5},{R32, 42, 5},{R33, 42, 1},{R34, 42, 1},{R35, 42, 1},{R36, 42, 1},{R37, 42, 1},{R38, 42, 1},{R39, 42, 1},{R40, 42, 1},{R41, 42, 1},{R42, 42, 3},{R43, 42, 2},{R44, 42, 3},{R45, 42, 4},{R46, 42, 9},{R47, 42, 8},{R48, 42, 10},{R49, 42, 4},{R50, 43, 1},{R51, 43, 1},{R52, 47, 2},{R53, 48, 2},{R54, 44, 1},{R55, 44, 0},{R56, 45, 3},{R57, 45, 1},{R58, 45, 0},{R59, 53, 1},{R60, 53, 3},{R61, 46, 0},{R62, 46, 1},{R63, 54, 3},{R64, 54, 1},{R65, 51, 0},{R66, 51, 1},{R67, 55, 3},{R68, 55, 1},{R69, 49, 0},{R70, 49, 1},{R71, 49, 1},{R72, 49, 1},{R73, 49, 1},{R74, 49, 1},{R75, 50, 1},{R76, 50, 1},{R77, 50, 2},{R78, 50, 2},{R79, 52, 7},{R80, 52, 4}};
 static const int entry_state = 0;
 ParserResult::ParserResult() {}
-ParserResult::ParserResult(std::string& file_name, const  ptr<Program> & data) {
+ParserResult::ParserResult(std::string& file_name, const  Dynamic & data) {
 	this->file_name = file_name;
 	this->data = data;
 }
@@ -802,7 +802,7 @@ while(!isTOKEOS(cur)) {
 	int action = actions[cstate][isTOKEOF(cur) ? 0 : INDEX(cur)+2];
 	switch(action&3) {
 		case 0: //error
-			results->push(ParserResult(fname, ptr<Program> ::null));
+			results->push(ParserResult(fname, Dynamic ::null));
 			
 			//skip to end of file, or end of process token.
 			while(!isTOKEOF(cur)) cur = tokens->pop();
@@ -818,7 +818,7 @@ while(!isTOKEOS(cur)) {
 
 			break;
 		case 1: //accept
-			results->push(ParserResult(fname, ptr<Program> (ret.front())));
+			results->push(ParserResult(fname, Dynamic (ret.front())));
 
 			ret.clear();
 			

@@ -6,9 +6,9 @@
 #include <token.hpp>
 struct ParserResult {
 	std::string file_name;
-	 ptr<Program>  data;
+	 Dynamic  data;
 	ParserResult();
-	ParserResult(std::string& file_name, const  ptr<Program> & data);
+	ParserResult(std::string& file_name, const  Dynamic & data);
 };
 std::ostream& operator<<(std::ostream&, const ParserResult&);
 class Parser : public Thread {
