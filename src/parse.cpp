@@ -38,53 +38,53 @@ struct RULE {
 };
 void R0(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = ((Token&)hllr__0).int_data; 
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 ptr<int>          retval;
+ retval = ((Token&)hllr__0).int_data;    
 	__ret.push_back(retval);
 }
 void R1(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 ptr<std::string>  retval;
  retval = ((Token&)hllr__0).string_data; 
 	__ret.push_back(retval);
 }
 void R2(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 ptr<std::string>  retval;
  retval = ((Token&)hllr__0).string_data; 
 	__ret.push_back(retval);
 }
 void R3(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 ptr<std::string>  retval;
  retval = ((Token&)hllr__0).string_data; 
 	__ret.push_back(retval);
 }
 void R4(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 ptr<std::string>  retval;
  retval = ((Token&)hllr__0).string_data; 
 	__ret.push_back(retval);
 }
 void R5(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 ptr<std::string>  retval;
  retval = ((Token&)hllr__0).string_data; 
 	__ret.push_back(retval);
 }
 void R6(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 ptr<Program>  retval;
 
         States& x = (States&)hllr__0;
         States& y = (States&)hllr__3;
@@ -95,12 +95,12 @@ void R6(std::vector<Dynamic>& __ret) {
 }
 void R7(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__4 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__3 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 ptr<Program>  retval;
 
         retval = Program((std::string&)hllr__2,(States&)hllr__4);
     
@@ -108,8 +108,8 @@ void R7(std::vector<Dynamic>& __ret) {
 }
 void R8(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 ptr<Program>  retval;
 
         retval = Program("",(States&)hllr__0);
     
@@ -117,33 +117,32 @@ void R8(std::vector<Dynamic>& __ret) {
 }
 void R9(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<int>          hllr__2 =  ptr<int>         (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         std::string& x = (std::string&)hllr__0;
         x.append(".");
-//        x.append((std::string)hllr__2);
-	x.append(GetSymbol(hllr__2.cast<int>()));
+		x.append(GetSymbol(*hllr__2));
         retval = hllr__0;
     
 	__ret.push_back(retval);
 }
 void R10(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
-        retval = GetSymbol(hllr__0.cast<int>());
+        retval = GetSymbol(*hllr__0);
     
 	__ret.push_back(retval);
 }
 void R11(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States& x = (States&)hllr__0;
         x.push_back(ptr<State>(hllr__1));
@@ -153,7 +152,7 @@ void R11(std::vector<Dynamic>& __ret) {
 }
 void R12(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic retval;
+	 Dynamic  retval;
 
         retval = States();
     
@@ -161,9 +160,9 @@ void R12(std::vector<Dynamic>& __ret) {
 }
 void R13(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States& x = (States&) hllr__0;
         x.push_back(ptr<State>(hllr__1));
@@ -173,7 +172,7 @@ void R13(std::vector<Dynamic>& __ret) {
 }
 void R14(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic retval;
+	 Dynamic  retval;
 
         retval = States();
     
@@ -181,80 +180,80 @@ void R14(std::vector<Dynamic>& __ret) {
 }
 void R15(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = StateNoise((std::string&)hllr__0); 
+ ptr<std::string>  hllr__0 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
+ retval = StateNoise(*hllr__0); 
 	__ret.push_back(retval);
 }
 void R16(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = StateSymbol(hllr__0.cast<int>()); 
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
+ retval = StateSymbol(*hllr__0); 
 	__ret.push_back(retval);
 }
 void R17(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateCons(); 
 	__ret.push_back(retval);
 }
 void R18(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateNoise("."); 
 	__ret.push_back(retval);
 }
 void R19(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateNoise(";"); 
 	__ret.push_back(retval);
 }
 void R20(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateNoise("/"); 
 	__ret.push_back(retval);
 }
 void R21(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateNoise("->"); 
 	__ret.push_back(retval);
 }
 void R22(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateNoise("$"); 
 	__ret.push_back(retval);
 }
 void R23(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<int>          hllr__1 =  ptr<int>         (__ret.back()); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
         States list;
-        list.push_back(ptr<State>(StateSymbol(hllr__1.cast<int>())));
+        list.push_back(ptr<State>(StateSymbol(*hllr__1)));
         retval = StateMBrack(dMScopeBrack(list));
     
 	__ret.push_back(retval);
 }
 void R24(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__4 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
         retval = StateString(ptr<State>(new StateArgScope((States&)hllr__3)));
     
@@ -262,58 +261,58 @@ void R24(std::vector<Dynamic>& __ret) {
 }
 void R25(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = StateDatum((std::string&)hllr__0); 
+ ptr<std::string>  hllr__0 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
+ retval = StateDatum(*hllr__0); 
 	__ret.push_back(retval);
 }
 void R26(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = StateDatum((std::string&)hllr__0); 
+ ptr<std::string>  hllr__0 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
+ retval = StateDatum(*hllr__0); 
 	__ret.push_back(retval);
 }
 void R27(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = StateNumber((std::string&)hllr__0); 
+ ptr<std::string>  hllr__0 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
+ retval = StateNumber(*hllr__0); 
 	__ret.push_back(retval);
 }
 void R28(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = StateNumber((std::string&)hllr__0); 
+ ptr<std::string>  hllr__0 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
+ retval = StateNumber(*hllr__0); 
 	__ret.push_back(retval);
 }
 void R29(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateImport((std::string&)hllr__1); 
 	__ret.push_back(retval);
 }
 void R30(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateScope((States&)hllr__1); 
 	__ret.push_back(retval);
 }
 void R31(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__4 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
         retval = StateMScope(dMScopeBrack((std::vector<MIdent>&)hllr__1, (States&)hllr__3));
     
@@ -321,12 +320,12 @@ void R31(std::vector<Dynamic>& __ret) {
 }
 void R32(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__4 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
         retval = StateMBrack(dMScopeBrack((std::vector<MIdent>&)hllr__1, (States&)hllr__3));
     
@@ -334,115 +333,115 @@ void R32(std::vector<Dynamic>& __ret) {
 }
 void R33(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("local")); 
 	__ret.push_back(retval);
 }
 void R34(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("global")); 
 	__ret.push_back(retval);
 }
 void R35(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("file")); 
 	__ret.push_back(retval);
 }
 void R36(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("object")); 
 	__ret.push_back(retval);
 }
 void R37(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("method")); 
 	__ret.push_back(retval);
 }
 void R38(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("mixin")); 
 	__ret.push_back(retval);
 }
 void R39(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("define")); 
 	__ret.push_back(retval);
 }
 void R40(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("expand")); 
 	__ret.push_back(retval);
 }
 void R41(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateSymbol(GetSymbol("str")); 
 	__ret.push_back(retval);
 }
 void R42(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateCall((States&)hllr__1); 
 	__ret.push_back(retval);
 }
 void R43(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateCall(); 
 	__ret.push_back(retval);
 }
 void R44(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateMImport(dMImport("")); 
 	__ret.push_back(retval);
 }
 void R45(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateMImport(dMImport((std::string&)hllr__1)); 
 	__ret.push_back(retval);
 }
 void R46(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__8 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__7 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__6 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__5 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__8 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__7 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__6 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__5 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__4 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__3 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States& pre = (States&) hllr__2;
         ptr<State> x = pre.back(); pre.pop_back();
@@ -453,15 +452,15 @@ void R46(std::vector<Dynamic>& __ret) {
 }
 void R47(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__7 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__6 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__5 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__7 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__6 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__5 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__4 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States& pre = (States&) hllr__1;
         ptr<State> x = pre.back(); pre.pop_back();
@@ -472,29 +471,29 @@ void R47(std::vector<Dynamic>& __ret) {
 }
 void R48(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__9 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__8 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__7 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__6 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__5 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__9 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__8 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__7 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__6 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__5 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__4 = __ret.back(); __ret.pop_back();
+ ptr<int>          hllr__3 =  ptr<int>         (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
-        retval = StateExpand(dMacro((MSCOPE&)hllr__2, hllr__3.cast<int>(), (std::vector</*Symbol*/int>&)hllr__5, (States&)hllr__7));
+        retval = StateExpand(dMacro((MSCOPE&)hllr__2, *hllr__3, (std::vector</*Symbol*/int>&)hllr__5, (States&)hllr__7));
     
 	__ret.push_back(retval);
 }
 void R49(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
         RMIXIN& x = (RMIXIN&)hllr__3;
         retval = x.build((MSCOPE&)hllr__2);
@@ -503,53 +502,53 @@ void R49(std::vector<Dynamic>& __ret) {
 }
 void R50(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
  retval = hllr__0; 
 	__ret.push_back(retval);
 }
 void R51(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = StateNoise(","); 
 	__ret.push_back(retval);
 }
 void R52(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
 	__ret.push_back(retval);
 }
 void R53(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
 	__ret.push_back(retval);
 }
 void R54(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
 
 	__ret.push_back(retval);
 }
 void R55(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic retval;
+	 Dynamic  retval;
 
 	__ret.push_back(retval);
 }
 void R56(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         std::vector<MIdent>& x = (std::vector<MIdent>&)hllr__0;
         x.push_back((MIdent&)hllr__2);
@@ -559,8 +558,8 @@ void R56(std::vector<Dynamic>& __ret) {
 }
 void R57(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         std::vector<MIdent> x;
         x.push_back((MIdent&)hllr__0);
@@ -570,47 +569,47 @@ void R57(std::vector<Dynamic>& __ret) {
 }
 void R58(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic retval;
+	 Dynamic  retval;
  retval = std::vector<MIdent>(); 
 	__ret.push_back(retval);
 }
 void R59(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
- retval = MIdent(hllr__0.cast<int>(),0); 
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
+ retval = MIdent(*hllr__0,0); 
 	__ret.push_back(retval);
 }
 void R60(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<std::string>  hllr__2 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
-        retval = MIdent(hllr__0.cast<int>(), atoi(((std::string&)hllr__2).c_str()));
+        retval = MIdent(*hllr__0, atoi((*hllr__2).c_str()));
     
 	__ret.push_back(retval);
 }
 void R61(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic retval;
+	 Dynamic  retval;
  retval = States(); 
 	__ret.push_back(retval);
 }
 void R62(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
  retval = hllr__0; 
 	__ret.push_back(retval);
 }
 void R63(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States& x = (States&) hllr__0;
         x.push_back(ptr<State>(StateArgScope((States&)hllr__2)));
@@ -620,8 +619,8 @@ void R63(std::vector<Dynamic>& __ret) {
 }
 void R64(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States x;
         x.push_back(ptr<State>(StateArgScope((States&)hllr__0)));
@@ -631,159 +630,159 @@ void R64(std::vector<Dynamic>& __ret) {
 }
 void R65(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic retval;
+	 Dynamic  retval;
  retval = States(); 
 	__ret.push_back(retval);
 }
 void R66(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
  retval = hllr__0; 
 	__ret.push_back(retval);
 }
 void R67(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<int>          hllr__2 =  ptr<int>         (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         std::vector<int>& x = (std::vector<int>&)hllr__0;
-        x.push_back(hllr__2.cast<int>());
+        x.push_back(*hllr__2);
         retval = hllr__0;
     
 	__ret.push_back(retval);
 }
 void R68(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         std::vector<int> x;
-        x.push_back(hllr__0.cast<int>());
+        x.push_back(*hllr__0);
         retval = x;
     
 	__ret.push_back(retval);
 }
 void R69(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic retval;
+	 Dynamic  retval;
  retval = sLocal; 
 	__ret.push_back(retval);
 }
 void R70(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = sLocal;  
 	__ret.push_back(retval);
 }
 void R71(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = sGlobal; 
 	__ret.push_back(retval);
 }
 void R72(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = sFile;   
 	__ret.push_back(retval);
 }
 void R73(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = sObject; 
 	__ret.push_back(retval);
 }
 void R74(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+Dynamic hllr__0 = __ret.back(); __ret.pop_back();
+	 Dynamic  retval;
  retval = sMethod; 
 	__ret.push_back(retval);
 }
 void R75(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States x;
-        x.push_back(ptr<State>(StateSymbol(hllr__0.cast<int>())));
+        x.push_back(ptr<State>(StateSymbol(*hllr__0)));
         retval = x;
     
 	__ret.push_back(retval);
 }
 void R76(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<std::string>  hllr__0 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States x;
-        x.push_back(ptr<State>(StateNoise((std::string&)hllr__0)));
+        x.push_back(ptr<State>(StateNoise(*hllr__0)));
         retval = x;
     
 	__ret.push_back(retval);
 }
 void R77(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<std::string>  hllr__1 =  ptr<std::string> (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States& x = (States&) hllr__0;
-        x.push_back(ptr<State>(StateNoise((std::string&)hllr__1)));
+        x.push_back(ptr<State>(StateNoise(*hllr__1)));
         retval = hllr__0;
     
 	__ret.push_back(retval);
 }
 void R78(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ ptr<int>          hllr__1 =  ptr<int>         (__ret.back()); __ret.pop_back();
+ Dynamic  hllr__0 =  Dynamic (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
         States& x = (States&) hllr__0;
-        x.push_back(ptr<State>(StateSymbol(hllr__1.cast<int>())));
+        x.push_back(ptr<State>(StateSymbol(*hllr__1)));
         retval = hllr__0;
     
 	__ret.push_back(retval);
 }
 void R79(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__6 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__5 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__4 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__6 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__5 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__4 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__3 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__2 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__1 = __ret.back(); __ret.pop_back();
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
-        retval = RMIXIN(hllr__0.cast<int>(), (std::vector<int>&)hllr__2, (States&)hllr__4);
+        retval = RMIXIN(*hllr__0, (std::vector<int>&)hllr__2, (States&)hllr__4);
     
 	__ret.push_back(retval);
 }
 void R80(std::vector<Dynamic>& __ret) {
 	//arguments
-	Dynamic hllr__3 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__2 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__1 = __ret.back(); __ret.pop_back();
-	Dynamic hllr__0 = __ret.back(); __ret.pop_back();
-	Dynamic retval;
+ Dynamic  hllr__3 =  Dynamic (__ret.back()); __ret.pop_back();
+Dynamic hllr__2 = __ret.back(); __ret.pop_back();
+ Dynamic  hllr__1 =  Dynamic (__ret.back()); __ret.pop_back();
+ ptr<int>          hllr__0 =  ptr<int>         (__ret.back()); __ret.pop_back();
+	 Dynamic  retval;
 
-        retval = RMIXIN(hllr__0.cast<int>(), (States&)hllr__1);
+        retval = RMIXIN(*hllr__0, (States&)hllr__1);
     
 	__ret.push_back(retval);
 }
 static const RULE rules[] = {{R0, 33, 1},{R1, 34, 1},{R2, 35, 1},{R3, 36, 1},{R4, 37, 1},{R5, 38, 1},{R6, 32, 4},{R7, 32, 5},{R8, 32, 1},{R9, 40, 3},{R10, 40, 1},{R11, 41, 2},{R12, 41, 0},{R13, 39, 2},{R14, 39, 0},{R15, 42, 1},{R16, 42, 1},{R17, 42, 1},{R18, 42, 1},{R19, 42, 1},{R20, 42, 1},{R21, 42, 1},{R22, 42, 1},{R23, 42, 2},{R24, 42, 5},{R25, 42, 1},{R26, 42, 1},{R27, 42, 1},{R28, 42, 1},{R29, 42, 3},{R30, 42, 3},{R31, 42, 5},{R32, 42, 5},{R33, 42, 1},{R34, 42, 1},{R35, 42, 1},{R36, 42, 1},{R37, 42, 1},{R38, 42, 1},{R39, 42, 1},{R40, 42, 1},{R41, 42, 1},{R42, 42, 3},{R43, 42, 2},{R44, 42, 3},{R45, 42, 4},{R46, 42, 9},{R47, 42, 8},{R48, 42, 10},{R49, 42, 4},{R50, 43, 1},{R51, 43, 1},{R52, 47, 2},{R53, 48, 2},{R54, 44, 1},{R55, 44, 0},{R56, 45, 3},{R57, 45, 1},{R58, 45, 0},{R59, 53, 1},{R60, 53, 3},{R61, 46, 0},{R62, 46, 1},{R63, 54, 3},{R64, 54, 1},{R65, 51, 0},{R66, 51, 1},{R67, 55, 3},{R68, 55, 1},{R69, 49, 0},{R70, 49, 1},{R71, 49, 1},{R72, 49, 1},{R73, 49, 1},{R74, 49, 1},{R75, 50, 1},{R76, 50, 1},{R77, 50, 2},{R78, 50, 2},{R79, 52, 7},{R80, 52, 4}};
 static const int entry_state = 0;
 ParserResult::ParserResult() {}
-ParserResult::ParserResult(std::string& file_name, const Dynamic& data) {
+ParserResult::ParserResult(std::string& file_name, const  ptr<Program> & data) {
 	this->file_name = file_name;
 	this->data = data;
 }
@@ -803,7 +802,7 @@ while(!isTOKEOS(cur)) {
 	int action = actions[cstate][isTOKEOF(cur) ? 0 : INDEX(cur)+2];
 	switch(action&3) {
 		case 0: //error
-			results->push(ParserResult(fname,Dynamic::null));
+			results->push(ParserResult(fname, ptr<Program> ::null));
 			
 			//skip to end of file, or end of process token.
 			while(!isTOKEOF(cur)) cur = tokens->pop();
@@ -819,7 +818,7 @@ while(!isTOKEOS(cur)) {
 
 			break;
 		case 1: //accept
-			results->push(ParserResult(fname,ret.front()));
+			results->push(ParserResult(fname, ptr<Program> (ret.front())));
 
 			ret.clear();
 			
