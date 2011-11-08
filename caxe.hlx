@@ -1,51 +1,53 @@
 //for c++ hlex
 
-NULL 10 : wscomment := ~/((/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)+|[ \n\r\t]+)+/~
+NULL 10 : ~/((/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)+|[ \n\r\t]+)+/~
 
--1 : ident  := ~/[a-zA-Z_][a-zA-Z_0-9]*/~
--1 : string := ~/("([^\\"\r\n]|\\.)*")|('([^\\'\r\n]|\\.)*')/~
--1 : regexp := ~/~/([^\\/\r\n]|\\.)*/[igmsu]*/~
--1 : integer := ~/([0-9]+)|(0x[0-9a-fA-F]+)|([0-9]+[eE][0-9]+)/~
--2 : floater := ~/(([0-9]+)|([0-9]*\.[0-9]+))([eE][\+\-]?[0-9]+)?/~
+-1 : /*ident  :=*/ ~/[a-zA-Z_][a-zA-Z_0-9]*/~ := %{ retval = GetSymbol(%); %}
+-1 : /*string :=*/ ~/("([^\\"\r\n]|\\.)*")|('([^\\'\r\n]|\\.)*')/~ := %{ retval = %; %}
+-1 : /*regexp :=*/ ~/~/([^\\/\r\n]|\\.)*/[igmsu]*/~ := %{ retval = %; %}
+-1 : /*integer :=*/ ~/([0-9]+)|(0x[0-9a-fA-F]+)|([0-9]+[eE][0-9]+)/~ := %{ retval = %; %}
+-2 : /*floater :=*/ ~/(([0-9]+)|([0-9]*\.[0-9]+))([eE][\+\-]?[0-9]+)?/~ := %{ retval = %; %}
 
- 0 : mscope  := ~/$\{/~
- 0 : mbrack  := ~/$\(/~
+error := %{ %; %}
 
- 0 : lbrace := ~/\{/~
- 0 : rbrace := ~/\}/~
- 0 : lparen := ~/\(/~
- 0 : rparen := ~/\)/~
- 0 : comma  := ~/,/~
- 0 : dot    := ~/\./~
- 0 : semi   := ~/;/~
- 0 : arrow  := ~/\-\>/~
- 0 : slash  := ~/\//~
- 0 : dollar := ~/$/~
+ 0 : /*mscope  :=*/ ~/$\{/~
+ 0 : /*mbrack  :=*/ ~/$\(/~
 
- 0 : cons   := ~/`/~
+ 0 : /*lbrace :=*/ ~/\{/~
+ 0 : /*rbrace :=*/ ~/\}/~
+ 0 : /*lparen :=*/ ~/\(/~
+ 0 : /*rparen :=*/ ~/\)/~
+ 0 : /*comma  :=*/ ~/,/~
+ 0 : /*dot    :=*/ ~/\./~
+ 0 : /*semi   :=*/ ~/;/~
+ 0 : /*arrow  :=*/ ~/\-\>/~
+ 0 : /*slash  :=*/ ~/\//~
+ 0 : /*dollar :=*/ ~/$/~
 
- 0 : package := ~/package/~
- 0 : import  := ~/import/~
+ 0 : /*cons   :=*/ ~/`/~
 
- 0 : define := ~/define/~
- 0 : mixin  := ~/mixin/~
- 0 : expand := ~/expand/~
- 0 : str    := ~/str/~
+ 0 : /*package :=*/ ~/package/~
+ 0 : /*import  :=*/ ~/import/~
 
- 0 : global := ~/global/~
- 0 : file   := ~/file/~
- 0 : local  := ~/local/~
- 0 : object := ~/object/~
- 0 : method := ~/method/~
+ 0 : /*define :=*/ ~/define/~
+ 0 : /*mixin  :=*/ ~/mixin/~
+ 0 : /*expand :=*/ ~/expand/~
+ 0 : /*str    :=*/ ~/str/~
+
+ 0 : /*global :=*/ ~/global/~
+ 0 : /*file   :=*/ ~/file/~
+ 0 : /*local  :=*/ ~/local/~
+ 0 : /*object :=*/ ~/object/~
+ 0 : /*method :=*/ ~/method/~
  
 %{
     #include <parser_obj.hpp>
 %}
-
+/*
 attr(ident)   := %{ retval = GetSymbol(%); %}
 attr(string)  := %{ retval = %; %}
 attr(regexp)  := %{ retval = %; %}
 attr(integer) := %{ retval = %; %}
 attr(floater) := %{ retval = %; %}
 
-error : noise
+error : noise*/
