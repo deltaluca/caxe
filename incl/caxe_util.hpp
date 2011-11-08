@@ -10,7 +10,12 @@
 std::string NAME__(const char*);
 #define RNAME(x) NAME__(typeid(x).name())
 
-//#include "atomic.hpp" //atomic increment/decrement counter thankyou MUSCLE
+#ifdef WINDOWS
+	#include <windows.h>
+	#define COUNTER volatile LONG
+#else
+	#define COUNTER int
+#endif
 
 #include <vector>
 template <typename T>
@@ -157,6 +162,22 @@ struct ptr_data : public ptr_base {
     }
 };
 //--------------------------------------------------------------------------------------------------
+inline int __atomic_dec(COUNTER* val) {
+#ifdef WINDOWS
+	return InterlockedDecrement(val);
+#else
+	return __sync_sub_and_fetch(val, 1);
+#endif
+}
+inline void __atomic_inc(COUNTER* val) {
+#ifdef WINDOWS
+	InterlockedIncrement(val);
+#else
+	__sync_add_and_fetch(val, 1);
+#endif
+}
+
+//--------------------------------------------------------------------------------------------------
 
 template <typename T>
 class ptr {
@@ -167,15 +188,13 @@ protected:
     template <typename S>
     friend std::ostream& operator<<(std::ostream&, const ptr<S>&);
 
-//    muscle::AtomicCounter* count;
-    int* count;
+    COUNTER* count;
 
     ptr_data<T>* data;
 
     void free() {
         if(count!=NULL) {
-//            if(count->AtomicDecrement()) {
-            if(__sync_sub_and_fetch(count, 1)==0) {
+            if(__atomic_dec(count)==0) {
                 delete data;
                 delete count;
             }
@@ -194,10 +213,8 @@ public:
     ptr(T* datum) {
         if(datum!=NULL) {
             data = new ptr_data<T>(datum);
-//            count = new muscle::AtomicCounter();
-//            count->AtomicIncrement();
-            count = new int(0);
-            __sync_fetch_and_add(count,1);
+            count = new COUNTER(0);
+            __atomic_inc(count);
         }else {
             data = NULL;
             count = NULL;
@@ -207,9 +224,8 @@ public:
     ptr(const ptr<T>& x) {
         if(x.data!=NULL) {
             data = x.data;
-//            (count = x.count)->AtomicIncrement();
             count = x.count;
-            __sync_fetch_and_add(count, 1);
+            __atomic_inc(count);
         }else {
             data = NULL;
             count = NULL;
@@ -222,9 +238,8 @@ public:
             free();
             if(x.data!=NULL) {
                 data = x.data;
-//                (count = x.count)->AtomicIncrement();
                 count = x.count;
-                __sync_fetch_and_add(count, 1);
+                __atomic_inc(count);
             }
         }
         return *this;
@@ -269,14 +284,12 @@ protected:
 
     friend std::ostream& operator<<(std::ostream&, const ptr<void>&);
 
-//    muscle::AtomicCounter* count;
-    int *count;
+    COUNTER *count;
     ptr_base* data;
 
     void free() {
         if(count!=NULL) {
-//            if(count->AtomicDecrement()) {
-            if(__sync_sub_and_fetch(count,1)==0) {
+            if(__atomic_dec(count)==0) {
                 delete data;
                 delete count;
             }
@@ -296,9 +309,8 @@ public:
     ptr(const ptr<T>& x) {
         if(x.data!=NULL) {
             data = (ptr_base*) x.data;
-//            (count = x.count)->AtomicIncrement();
             count = x.count;
-            __sync_fetch_and_add(count,1);
+            __atomic_inc(count);
         }else {
             data = NULL;
             count = NULL;
@@ -308,9 +320,8 @@ public:
     ptr(const ptr<void>& x) {
         if(x.data!=NULL) {
             data = x.data;
-//            (count = x.count)->AtomicIncrement();
             count = x.count;
-            __sync_fetch_and_add(count, 1);
+            __atomic_inc(count);
         }else {
             data = NULL;
             count = NULL;
@@ -322,10 +333,8 @@ public:
     ptr(const T& x) {
         T* xn = new T(x);
         data = (ptr_base*) new ptr_data<T>(xn);
-//        count = new muscle::AtomicCounter();
-//        count->AtomicIncrement();
-        count = new int(0);
-        __sync_fetch_and_add(count, 1);
+        count = new COUNTER(0);
+        __atomic_inc(count);
     }
 
     //only for Dynamic
@@ -334,10 +343,8 @@ public:
         free();
         T* xn = new T(x);
         data = (ptr_base*) new ptr_data<T>(xn);
-//        count = new muscle::AtomicCounter();
-//        count->AtomicIncrement();
-        count = new int(0);
-        __sync_fetch_and_add(count, 1);
+        count = new COUNTER(0);
+        __atomic_inc(count);
         return *this;
     }
 
@@ -345,10 +352,8 @@ public:
     template <typename T>
     ptr(T* x) {
         data = (ptr_base*) new ptr_data<T>(x);
-//        count = new muscle::AtomicCounter();
-//        count->AtomicIncrement();
-        count = new int(0);
-        __sync_fetch_and_add(count, 1);
+        count = new COUNTER(0);
+        __atomic_inc(count);
     }
 
     //only for Dynamic
@@ -356,10 +361,8 @@ public:
     ptr<void>& operator=(T* x) {
         free();
         data = (ptr_base*) new ptr_data<T>(x);
-//        count = new muscle::AtomicCounter();
-//        count->AtomicIncrement();
-        count = new int(0);
-        __sync_fetch_and_add(count, 1);
+        count = new COUNTER(0);
+        __atomic_inc(count);
         return *this;
     }
 
@@ -378,9 +381,8 @@ public:
             free();
             if(x.data!=NULL) {
                 data = (ptr_base*) x.data;
-//                (count = x.count)->AtomicIncrement();
                 count = x.count;
-                __sync_fetch_and_add(count, 1);
+                __atomic_inc(count);
             }
         }
         return *this;
@@ -390,9 +392,8 @@ public:
             free();
             if(x.data!=NULL) {
                 data = x.data;
-//                (count = x.count)->AtomicIncrement();
                 count = x.count;
-                __sync_fetch_and_add(count, 1);
+                __atomic_inc(count);
             }
         }
         return *this;
@@ -418,9 +419,8 @@ template <typename T>
 ptr<T>::ptr(const ptr<void>& x) {
     if(x.data!=NULL) {
         data = (ptr_data<T>*) x.data;
-//        (count = x.count)->AtomicIncrement();
         count = x.count;
-        __sync_fetch_and_add(count, 1);
+        __atomic_inc(count);
     }else {
         data = NULL;
         count = NULL;
@@ -433,9 +433,8 @@ ptr<T>& ptr<T>::operator=(const ptr<void>& x) {
         free();
         if(x.data!=NULL) {
             data = (ptr_data<T>*) x.data;
-//            (count = x.count)->AtomicIncrement();
             count = x.count;
-            __sync_fetch_and_add(count, 1);
+            __atomic_inc(count);
         }
     }
     return *this;
