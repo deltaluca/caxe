@@ -13,8 +13,8 @@ default:
 INCL = incl
 SRC = src
 OBJ = obj
-BIN = bin-tmp
-EXEC = caxe-tmp
+BIN = bin
+EXEC = caxe
 
 CXX = g++
 ifeq ($(WINDOWS),true)
