@@ -39,12 +39,12 @@
 
 %entry file
 
-%ident %{ int %} : IDENT %{ retval = ((Token&)%0).int_data; %} ;
-%string %{ std::string %} : STRING %{ retval = ((Token&)%0).string_data; %} ;
-%regexp %{ std::string %} : REGEXP %{ retval = ((Token&)%0).string_data; %} ;
+%ident   %{     int     %} : IDENT   %{ retval = ((Token&)%0).int_data;    %} ;
+%string  %{ std::string %} : STRING  %{ retval = ((Token&)%0).string_data; %} ;
+%regexp  %{ std::string %} : REGEXP  %{ retval = ((Token&)%0).string_data; %} ;
 %integer %{ std::string %} : INTEGER %{ retval = ((Token&)%0).string_data; %} ;
 %floater %{ std::string %} : FLOATER %{ retval = ((Token&)%0).string_data; %} ;
-%noise   %{ std::string %} : NOISE %{ retval = ((Token&)%0).string_data; %} ;
+%noise   %{ std::string %} : NOISE   %{ retval = ((Token&)%0).string_data; %} ;
 
 %file %{ Dynamic %}
     : restex PACKAGE SEMI restex %{
@@ -61,12 +61,11 @@
     %}
 ;
 
-%qname %{ Dynamic %}
+%qname %{ std::string %}
     : qname DOT ident %{
         std::string& x = (std::string&)%0;
         x.append(".");
-//        x.append((std::string)%2);
-	x.append(GetSymbol(%2.cast<int>()));
+		x.append(GetSymbol(%2.cast<int>()));
         retval = %0;
     %}
     | ident %{
@@ -74,7 +73,7 @@
     %}
 ;
 
-%rest %{ Dynamic %}
+%rest %{ States %}
     : rest state %{
         States& x = (States&)%0;
         x.push_back(ptr<State>(%1));
@@ -85,7 +84,7 @@
     %}
 ;
 
-%restex %{ Dynamic %}
+%restex %{ States %}
     : restex stateex %{
         States& x = (States&) %0;
         x.push_back(ptr<State>(%1));
@@ -96,7 +95,7 @@
     %}
 ;
 
-%state %{ Dynamic %}
+%state %{ State %}
     : noise %{ retval = StateNoise((std::string&)%0); %}
     | ident %{ retval = StateSymbol(%0.cast<int>()); %}
     | CONS  %{ retval = StateCons(); %}
@@ -170,13 +169,13 @@
     %}
 ;
 
-%stateex %{ Dynamic %}
+%stateex %{ State %}
     : state %{ retval = %0; %}
     | COMMA %{ retval = StateNoise(","); %}
 ;
 
 %mimport %{ Dynamic %} : MBRACK IMPORT %{%};
-%mdefine  %{ Dynamic %}: MBRACK DEFINE %{%};
+%mdefine %{ Dynamic %} : MBRACK DEFINE %{%};
 
 %semi %{ Dynamic %} : SEMI %{%} | %{%} ;
 
