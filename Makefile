@@ -4,6 +4,7 @@ default:
 	@echo "---------------"
 	@echo "  To compile caxe; use target 'caxe'"
 	@echo "     (add WINDOWS=true for windows compilation using mingw)"
+	@echo "     (add NOTIMES=true to disable timing (doesn't seem to work on macs))"
 	@echo "  To clean; use target 'clean'"
 	@echo "  To create caxe tar; use target 'tar'"
 	@echo "  To compile lexer/parser; use target 'bootstrap'"
@@ -22,6 +23,11 @@ ifeq ($(WINDOWS),true)
 else
 	CXXFLAGS = -c -std=gnu++0x -Wall -I$(INCL)
 endif
+
+ifeq ($(NOTIMES),true)
+	CXXFLAGS += -D NOTIMES
+endif
+
 OP = -Ofast \
   -fmerge-all-constants \
   -fmodulo-sched \
@@ -64,10 +70,12 @@ LEXEROP = -falign-functions\
   -fvpt\
   -funroll-all-loops
 
-ifeq ($(WINDOWS),true)
-	LFLAGS = -lpthread
-else
-	LFLAGS = -lpthread -lrt
+LFLAGS = -lpthread
+
+ifeq ($(WINDOWS),false)
+ifeq ($(NOTIMES),false)
+	LFLAGS += -lrt
+endif
 endif
 
 _OBJS = main.o \

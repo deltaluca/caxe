@@ -39,7 +39,9 @@ int main(int argc, char* argv[]) {
 
     //-----------------------------------------------------------------
 #ifndef WINDOWS
+#ifndef NOTIMES
     bool __times = false;
+#endif
 #endif
 
     bool _out = false;
@@ -54,7 +56,9 @@ int main(int argc, char* argv[]) {
             else std::cout << "-tc expected integer argument\n";
         }else if(arg.compare("--times")==0) {
 #ifndef WINDOWS
+#ifndef NOTIMES
 		__times = true;
+#endif
 #endif
 	}else if(arg.compare("-o")==0) {
             if(i+1<argc) {
@@ -78,7 +82,9 @@ int main(int argc, char* argv[]) {
     //-----------------------------------------------------------------
 
 #ifndef WINDOWS
+#ifndef NOTIMES
     struct timespec clk; clock_gettime(CLOCK_MONOTONIC, &clk);
+#endif
 #endif
 
     //-----------------------------------------------------------------
@@ -112,7 +118,9 @@ int main(int argc, char* argv[]) {
     delete [] parsers;
     
 #ifndef WINDOWS
+#ifndef NOTIMES
     struct timespec flpclk; clock_gettime(CLOCK_MONOTONIC, &flpclk);
+#endif
 #endif
 
     //-----------------------------------------------------------------
@@ -133,7 +141,9 @@ int main(int argc, char* argv[]) {
     delete [] ans;
 
 #ifndef WINDOWS
+#ifndef NOTIMES
     struct timespec ansclk; clock_gettime(CLOCK_MONOTONIC, &ansclk);
+#endif
 #endif
 
     //-----------------------------------------------------------------
@@ -172,7 +182,9 @@ int main(int argc, char* argv[]) {
     delete [] sub;
 
 #ifndef WINDOWS
+#ifndef NOTIMES
     struct timespec subclk; clock_gettime(CLOCK_MONOTONIC, &subclk);
+#endif
 #endif
 
     //-----------------------------------------------------------------
@@ -193,12 +205,15 @@ int main(int argc, char* argv[]) {
     }
 
 #ifndef WINDOWS
+#ifndef NOTIMES
     struct timespec fclk; clock_gettime(CLOCK_MONOTONIC, &fclk);
+#endif
 #endif
 
     //-----------------------------------------------------------------
 
 #ifndef WINDOWS
+#ifndef NOTIMES
     if(__times) {
         struct timespec curclk; clock_gettime(CLOCK_MONOTONIC, &curclk);
         double dt  = double(curclk.tv_sec - clk.tv_sec)    + double(curclk.tv_nsec - clk.tv_nsec   )*1e-9;
@@ -214,6 +229,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\tmacro sub: " << dt3 << "s\n";
         if(_out) std::cout << "\tun-parse:  " << dt4 << "s\n";
     }
+#endif
 #endif
 
     //-----------------------------------------------------------------
