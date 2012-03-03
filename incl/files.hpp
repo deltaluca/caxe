@@ -91,7 +91,31 @@ std::string extension(const std::string& name) {
     else return "";
 }
 
-void rdir(std::vector<std::string> paths, tsDeque<std::string>& files) {
+std::string repair(const std::string& path) {
+	std::string ret;
+	bool pslash = true;
+	for(size_t i = 0; i<path.length(); i++) {
+		char c = path.at(i);
+		if((c=='/' || c=='\\') && pslash) continue;
+		pslash = c=='/' || c=='\\';
+		ret.push_back(c);
+	}
+	return ret;
+}
+
+bool notexcluded(const std::vector<std::string>& excludes, const std::string& path) {
+	bool ret = true;
+	std::string cpath = repair(path);
+	for(auto i = excludes.begin(); i!=excludes.end(); i++) {
+		if((*i).compare(cpath)==0) {
+			ret = false;
+			break;
+		}
+	}
+	return ret;
+}
+
+void rdir(std::vector<std::string> paths, tsDeque<std::string>& files, const std::vector<std::string>& excludes) {
     for(auto i = paths.begin(); i!=paths.end(); i++) {
         if(access((*i).c_str(),0)!=0) {
             printf("%s not found\n",(*i).c_str());
@@ -114,7 +138,9 @@ void rdir(std::vector<std::string> paths, tsDeque<std::string>& files) {
                     if(str.find_first_not_of('.')!=std::string::npos) {
                         std::string newdir = path + "/" + str;
                         if(isFile(newdir)) {
-                            if(extension(newdir).compare("cx")==0) {
+                            if(extension(newdir).compare("cx")==0
+							&& notexcluded(excludes,newdir))
+							{
                                 if(fset.find(newdir)==fset.end()) {
                                     fset.insert(std::pair<std::string,bool>(newdir,true));
                                     files.push(newdir);
@@ -128,7 +154,9 @@ void rdir(std::vector<std::string> paths, tsDeque<std::string>& files) {
                 closedir(xdir);
             }
         }else {
-            if(extension(path).compare("cx")==0) {
+            if(extension(path).compare("cx")==0
+			&& notexcluded(excludes, path))
+			{
                 if(fset.find(path)==fset.end()) {
                     fset.insert(std::pair<std::string,bool>(path,true));
                     files.push(path);
@@ -138,10 +166,10 @@ void rdir(std::vector<std::string> paths, tsDeque<std::string>& files) {
     }
 }
 
-void rdir(const std::string& path, tsDeque<std::string>& files) {
+void rdir(const std::string& path, tsDeque<std::string>& files, const std::vector<std::string>& excludes) {
     std::vector<std::string> paths;
     paths.push_back(path);
-    rdir(paths,files);
+    rdir(paths,files,excludes);
 }
 
 #endif

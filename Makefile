@@ -72,8 +72,8 @@ LEXEROP = -falign-functions\
 
 LFLAGS = -lpthread
 
-ifeq ($(WINDOWS),false)
-ifeq ($(NOTIMES),false)
+ifneq ($(WINDOWS),true)
+ifneq ($(NOTIMES),true)
 	LFLAGS += -lrt
 endif
 endif

@@ -30,6 +30,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Options:\n";
         std::cout << "\t-o out_dir\n";
         std::cout << "\t\tproduce output in given directory\n";
+		std::cout << "\t-x file\n";
+		std::cout << "\t\texclude file\n";
         std::cout << "\t-tc thread_count\n";
         std::cout << "\t\tuse `thread_count` number of threads for preprocessing\n";
         std::cout << "\t--times\n";
@@ -48,6 +50,7 @@ int main(int argc, char* argv[]) {
     std::string out;
     std::vector<std::string> cx_args;
     std::vector<std::string> search_dir;
+	std::vector<std::string> excludes;
 
     for(int i = 1; i<argc; i++) {
         std::string arg (argv[i]);
@@ -60,7 +63,11 @@ int main(int argc, char* argv[]) {
 		__times = true;
 #endif
 #endif
-	}else if(arg.compare("-o")==0) {
+		}else if(arg.compare("-x")==0) {
+			if(i+1<argc) {
+				excludes.push_back(std::string(argv[++i]));
+			}else std::cout << "-x expects argument of filename\n";
+		}else if(arg.compare("-o")==0) {
             if(i+1<argc) {
                 out = std::string(argv[++i]);
                 _out = true;
@@ -104,8 +111,15 @@ int main(int argc, char* argv[]) {
         parsers[i].start();
     }
 
+	std::vector<std::string> excludes2;
+	for(auto i = excludes.begin(); i!=excludes.end(); i++) {
+		for(auto j = search_dir.begin(); j!=search_dir.end(); j++) {
+			excludes2.push_back(repair((*j)+std::string("/")+(*i)));
+		}
+	}
+
     //read files and let lex/parsing commence!
-    rdir(cx_args,files);
+    rdir(cx_args,files,excludes2);
     for(int i = 0; i<lpcnt; i++) files.push("hlex_eos");
 
     for(int i = 0; i<lpcnt; i++) {
