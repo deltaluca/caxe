@@ -116,6 +116,7 @@ int main(int argc, char* argv[]) {
 		for(auto j = search_dir.begin(); j!=search_dir.end(); j++) {
 			excludes2.push_back(repair((*j)+std::string("/")+(*i)));
 		}
+		excludes2.push_back(*i);
 	}
 
     //read files and let lex/parsing commence!
