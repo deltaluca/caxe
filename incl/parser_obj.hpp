@@ -40,7 +40,7 @@ enum STATE_ID {
     sCall,
 
     sSymbol,
-    sDoc
+    sDoc, sDocString
 };
 
 struct State {
@@ -138,6 +138,7 @@ typedef SubState<sMBrack, dMScopeBrack> StateMBrack;
 typedef SubState<sScope, std::vector<ptr<State>>> StateScope;
 typedef SubState<sArgScope, std::vector<ptr<State>>> StateArgScope;
 typedef SubState<sString, ptr<State>> StateString;
+typedef SubState<sDocString, ptr<State>> StateDocString;
 
 typedef SubState<sRealScope, ptr<Scope>> StateRealScope;
 

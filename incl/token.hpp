@@ -12,7 +12,7 @@ enum TOKID {
 	tPackage, tImport, tDefine, tMixin, tExpand, tStr,
 	tGlobal, tFile, tLocal, tObject, tMethod,
 	tNoise,
-    tDoc
+    tDoc, tDocStr
 };
 
 struct Token {

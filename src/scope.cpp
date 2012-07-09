@@ -235,7 +235,7 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
     if(x->id == sSymbol) {
         StateSymbol& y = (StateSymbol&) *x;
         ptr<State> arg;
-        
+
         for(auto i = names.begin(); i!=names.end(); i++) {
             const MName& name = *i;
             int cnt = 0;
@@ -250,7 +250,7 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
             if(arg!=ptr<State>::null)
                 break;
         }
-        
+
         if(arg!=ptr<State>::null) return arg;
         else return x;
     }else if(x->id == sScope) {
@@ -301,6 +301,13 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
         s->virtuals = true;
         return ptr<State>(new StateString(ptr<State>(new StateRealScope(s))));
 
+    }else if(x->id == sDocString) {
+        StateDocString& y = (StateDocString&) *x;
+        std::vector<ptr<State>> list; list.push_back(y.data);
+        ptr<Scope> s = insularScope(cur, list, names);
+        s->virtuals = true;
+        return ptr<State>(new StateDocString(ptr<State>(new StateRealScope(s))));
+
     }else if(x->id == sMixin)  return procMacro(cur,names,x,((StateMixin &)*x).data);
      else if(x->id == sDefine) return procMacro(cur,names,x,((StateDefine&)*x).data);
      else if(x->id == sExpand) return procMacro(cur,names,x,((StateExpand&)*x).data);
@@ -322,7 +329,7 @@ static ptr<State> proc(ptr<Scope> cur, ptr<State> x, const std::vector<MName>& n
 
 //----------------------------------------------------------------------
 
-static void merge(ptr<Scope> self, ptr<Macros> ret, ptr<Scope> parent) {	
+static void merge(ptr<Scope> self, ptr<Macros> ret, ptr<Scope> parent) {
 	ptr<Macros> par = Scope::macros_in_scope(parent);
 	for(int i = 0; i<MAXARG; i++) {
 		auto& pmap = par->hash[i];

@@ -38,6 +38,7 @@ error := %{ retval = new Token(tNoise,%); %}
 ~/mixin/~  := %{ retval = new Token(tMixin);  %}
 ~/expand/~ := %{ retval = new Token(tExpand); %}
 ~/str/~    := %{ retval = new Token(tStr);    %}
+~/doc/~    := %{ retval = new Token(tDocStr); %}
 
 ~/global/~ := %{ retval = new Token(tGlobal); %}
 ~/file/~   := %{ retval = new Token(tFile);   %}

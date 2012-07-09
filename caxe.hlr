@@ -9,7 +9,7 @@
 %token PACKAGE IMPORT DEFINE MIXIN EXPAND STR
 %token GLOBAL FILE LOCAL OBJECT METHOD
 %token NOISE
-%token DOC
+%token DOC DOCSTR
 
 %{
     #include <parser_obj.hpp>
@@ -108,6 +108,7 @@
 
     | doc %{ retval = StateDoc(*%0); %}
 
+    | DOLL DOLL %{ retval = StateNoise(" "); %}
     | DOLL %{ retval = StateNoise("$"); %}
     | DOLL ident %{
         States list;
@@ -116,6 +117,10 @@
     %}
     | DOLL STR LPAREN restex RPAREN %{
         retval = StateString(ptr<State>(new StateArgScope((States&)%3)));
+    %}
+
+    | DOLL DOCSTR LPAREN restex RPAREN %{
+        retval = StateDocString(ptr<State>(new StateArgScope((States&)%3)));
     %}
 
     | string  %{ retval = StateDatum(*%0); %}
@@ -142,6 +147,7 @@
     | DEFINE %{ retval = StateSymbol(GetSymbol("define")); %}
     | EXPAND %{ retval = StateSymbol(GetSymbol("expand")); %}
     | STR    %{ retval = StateSymbol(GetSymbol("str")); %}
+    | DOCSTR %{ retval = StateSymbol(GetSymbol("doc")); %}
 
     | LPAREN args RPAREN %{ retval = StateCall((States&)%1); %}
     | LPAREN RPAREN %{ retval = StateCall(); %}

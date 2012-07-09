@@ -3,10 +3,10 @@
 
 static std::vector<ptr<State>> concatenate(const std::vector<ptr<State>>& xs) {
     std::vector<ptr<State>> ret;
-    
+
     /*Symbol*/int* preident = NULL;
     bool precons = false;
-    
+
     for(auto i = xs.begin(); i!=xs.end(); i++) {
         ptr<State> x = *i;
         if(x->id==sRealScope) {
@@ -79,6 +79,12 @@ void subs_data(std::vector<ptr<State>>& ret, std::vector<ptr<State>>& in_data, p
 
         }else if(x->id==sString) {
             StateString& y = (StateString&) *x;
+            subs(((StateRealScope&) *y.data).data);
+            ret.push_back(x);
+            preident = -1;
+
+        }else if(x->id==sDocString) {
+            StateDocString& y = (StateDocString&) *x;
             subs(((StateRealScope&) *y.data).data);
             ret.push_back(x);
             preident = -1;

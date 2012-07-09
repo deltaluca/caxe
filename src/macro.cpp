@@ -47,7 +47,7 @@ static ptr<Macro> half_clone(ptr<Macro> m) {
         if(x->id==sSymbol) {
             StateSymbol& y = (StateSymbol&) *x;
             ret->preamble.push_back(ptr<State>(new StateSymbol(y.data)));
-        }else { 
+        }else {
             StateNoise& y = (StateNoise&) *x;
             ret->preamble.push_back(ptr<State>(new StateNoise(y.data)));
         }
@@ -98,12 +98,20 @@ static void inst(ptr<Macro> self, std::vector<ptr<State>>& ret, const std::vecto
             ret.push_back(x);
         }else if(x->id==sNoise) {
             ret.push_back(x);
+        }else if(x->id==sDoc) {
+            ret.push_back(x);
 
         }else if(x->id==sString) {
             StateString& y = (StateString&) *x;
             ptr<Scope> sc = ((ptr<StateRealScope>) y.data)->data;
             ptr<Scope> s = instScope(self, sc, args, cscope);
             ret.push_back(ptr<State>(new StateString(ptr<State>(new StateRealScope(s)))));
+
+        }else if(x->id==sDocString) {
+            StateDocString& y = (StateDocString&) *x;
+            ptr<Scope> sc = ((ptr<StateRealScope>) y.data)->data;
+            ptr<Scope> s = instScope(self, sc, args, cscope);
+            ret.push_back(ptr<State>(new StateDocString(ptr<State>(new StateRealScope(s)))));
 
         }else if(x->id==sCall) {
             StateCall& y = (StateCall&) *x;
