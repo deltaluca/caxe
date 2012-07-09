@@ -9,6 +9,7 @@
 %token PACKAGE IMPORT DEFINE MIXIN EXPAND STR
 %token GLOBAL FILE LOCAL OBJECT METHOD
 %token NOISE
+%token DOC
 
 %{
     #include <parser_obj.hpp>
@@ -45,6 +46,7 @@
 %integer %{ ptr<std::string> %} : INTEGER %{ retval = ((Token&)%0).string_data; %} ;
 %floater %{ ptr<std::string> %} : FLOATER %{ retval = ((Token&)%0).string_data; %} ;
 %noise   %{ ptr<std::string> %} : NOISE   %{ retval = ((Token&)%0).string_data; %} ;
+%doc     %{ ptr<std::string> %} : DOC     %{ retval = ((Token&)%0).string_data; %} ;
 
 %file %{ Dynamic %}
     : restex PACKAGE SEMI restex %{
@@ -103,6 +105,8 @@
     | SEMI  %{ retval = StateNoise(";"); %}
     | SLASH %{ retval = StateNoise("/"); %}
     | ARROW %{ retval = StateNoise("->"); %}
+
+    | doc %{ retval = StateNoise((*%0) + "\r\n"); %}
 
     | DOLL %{ retval = StateNoise("$"); %}
     | DOLL ident %{

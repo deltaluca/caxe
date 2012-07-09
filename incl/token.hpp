@@ -11,13 +11,14 @@ enum TOKID {
 	tCons,
 	tPackage, tImport, tDefine, tMixin, tExpand, tStr,
 	tGlobal, tFile, tLocal, tObject, tMethod,
-	tNoise
+	tNoise,
+    tDoc
 };
 
 struct Token {
 	int id;
 	std::string string_data;
-	int int_data; 
+	int int_data;
 
 	Token(int id):id(id) {}
 	Token(int id, const std::string& str):id(id),string_data(str) {}

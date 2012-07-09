@@ -28,47 +28,54 @@ ifeq ($(NOTIMES),true)
 	CXXFLAGS += -D NOTIMES
 endif
 
-OP = -Ofast \
-  -fmerge-all-constants \
-  -fmodulo-sched \
-  -fmodulo-sched-allow-regmoves \
-  -fno-branch-count-reg \
-  -fgcse-lm -fgcse-sm \
-  -fgcse-after-reload \
-  -funsafe-loop-optimizations -Wunsafe-loop-optimizations \
-  
+ifneq ($(DEBUG),true)
+    OP = -Ofast \
+      -fmerge-all-constants \
+      -fmodulo-sched \
+      -fmodulo-sched-allow-regmoves \
+      -fno-branch-count-reg \
+      -fgcse-lm -fgcse-sm \
+      -fgcse-after-reload \
+      -funsafe-loop-optimizations -Wunsafe-loop-optimizations
+endif
+
+
 # lexer.cpp doesn't compile with even -O1
-LEXEROP = -falign-functions\
-  -falign-jumps\
-  -falign-labels\
-  -falign-loops\
-  -fdefer-pop\
-  -fdelete-null-pointer-checks\
-  -fexpensive-optimizations\
-  -fguess-branch-probability\
-  -fjump-tables\
-  -fmerge-all-constants\
-  -fmodulo-sched\
-  -fmove-loop-invariants\
-  -fnon-call-exceptions\
-  -fpeel-loops\
-  -fpeephole2\
-  -foptimize-register-move\
-  -fomit-frame-pointer\
-  -fprefetch-loop-arrays\
-  -freorder-blocks-and-partition\
-  -fthread-jumps\
-  -ftree-copyrename\
-  -ftree-dominator-opts\
-  -ftree-loop-optimize\
-  -ftree-lrs\
-  -ftree-loop-distribution\
-  -funsafe-loop-optimizations\
-  -funsafe-math-optimizations\
-  -funswitch-loops\
-  -funwind-tables\
-  -fvpt\
-  -funroll-all-loops
+ifneq ($(DEBUG),true)
+    LEXEROP = -falign-functions\
+      -falign-jumps\
+      -falign-labels\
+      -falign-loops\
+      -fdefer-pop\
+      -fdelete-null-pointer-checks\
+      -fexpensive-optimizations\
+      -fguess-branch-probability\
+      -fjump-tables\
+      -fmerge-all-constants\
+      -fmodulo-sched\
+      -fmove-loop-invariants\
+      -fnon-call-exceptions\
+      -fpeel-loops\
+      -fpeephole2\
+      -foptimize-register-move\
+      -fomit-frame-pointer\
+      -fprefetch-loop-arrays\
+      -freorder-blocks-and-partition\
+      -fthread-jumps\
+      -ftree-copyrename\
+      -ftree-dominator-opts\
+      -ftree-loop-optimize\
+      -ftree-lrs\
+      -ftree-loop-distribution\
+      -funsafe-loop-optimizations\
+      -funsafe-math-optimizations\
+      -funswitch-loops\
+      -funwind-tables\
+      -fvpt\
+      -funroll-all-loops
+else
+    CXXFLAGS += -g
+endif
 
 LFLAGS = -lpthread
 

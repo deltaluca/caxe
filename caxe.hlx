@@ -44,3 +44,5 @@ error := %{ retval = new Token(tNoise,%); %}
 ~/local/~  := %{ retval = new Token(tLocal);  %}
 ~/object/~ := %{ retval = new Token(tObject); %}
 ~/method/~ := %{ retval = new Token(tMethod); %}
+
+11 : ~/!![^\r\n]*/~ := %{ retval = new Token(tDoc,%.substr(2)); %}
