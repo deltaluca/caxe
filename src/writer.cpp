@@ -197,6 +197,14 @@ void writer::print(std::ostream& out, ptr<State> x) {
         nl = true;
         pre = false;
 
+    }else if(x->id==sDoc) {
+        StateDoc& y = (StateDoc&) *x;
+        if (nl) { out << (lines ? "\n" : "") << tab; }
+        if (pre && !nl) out << " ";
+        out << y.data;
+        nl = true;
+        pre = false;
+
     }else if(x->id==sMImport) {
         StateMImport& y = (StateMImport&) *x;
         dMImport& z = y.data;

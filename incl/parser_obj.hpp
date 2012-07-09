@@ -38,8 +38,9 @@ enum STATE_ID {
     sInstances,
     sArgument,
     sCall,
-    
-    sSymbol
+
+    sSymbol,
+    sDoc
 };
 
 struct State {
@@ -96,6 +97,7 @@ typedef SubState<sNoise, std::string> StateNoise;
 typedef SubState<sDatum, std::string> StateDatum;
 typedef SubState<sNumber,std::string> StateNumber;
 //typedef SubState<sIdent, std::string> StateIdent;
+typedef SubState<sDoc, std::string> StateDoc;
 
 typedef SubState<sCons> StateCons;
 

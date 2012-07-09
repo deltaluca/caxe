@@ -238,7 +238,7 @@ void R23(std::vector<Dynamic>& __ret) {
 	//arguments
  ptr<std::string>  hllr__0 =  ptr<std::string> (__ret.back()); __ret.pop_back();
 	 Dynamic  retval;
- retval = StateNoise((*hllr__0) + "\r\n"); 
+ retval = StateDoc(*hllr__0); 
 	__ret.push_back(retval);
 }
 void R24(std::vector<Dynamic>& __ret) {

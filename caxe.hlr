@@ -106,7 +106,7 @@
     | SLASH %{ retval = StateNoise("/"); %}
     | ARROW %{ retval = StateNoise("->"); %}
 
-    | doc %{ retval = StateNoise((*%0) + "\r\n"); %}
+    | doc %{ retval = StateDoc(*%0); %}
 
     | DOLL %{ retval = StateNoise("$"); %}
     | DOLL ident %{
