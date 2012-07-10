@@ -59,6 +59,44 @@ will also become: "a+{hi there}"
 
 There is no operation to combine strings, though ` may be used as a dual for this purpose at some point in the future if needs be. haXe compiler should do this already anyways!
 
+--------------------------------------- DOC STRINGS
+
+Comments are stripped from caxe code when compiled into haxe; this is generally just fine since the haxe code is not necessarigly meant to be read.
+
+However for things like javadoc comments you can use the !! symbol to enforce caxe to ignore everything which remains on that line and insert it literally into the haxe code.
+Eg:
+
+!!/**
+!! * The Main class!
+!! */
+class Main {
+    !!/**
+    !! * Constructing fun.
+    !! */
+    public function new() {
+    }
+}
+
+Note that macro substitution is not performed on the text following the !! and it is kept in purely iteral form.
+If macro substitution is required then you can use the (more limited) $doc macro, eg:
+
+$(mixin header(text)
+    !!/**
+    !! * text
+    $doc($$*$$text)
+    !! */
+);
+header(hello)
+
+becomes the equivalent to:
+
+    !!/**
+    !! * text
+    !! * hello
+    !! */
+
+Noting the additional 'macro' $$ which is replaced by a space character in output to 'massage' caxe into formatting the output code how you want.
+
 --------------------------------------- IMPORT
 
 In haXe as of writing there is no real way to do wildcard imports, caXe provides wildcard imports for all .cx files given as arguments. The syntax is:
