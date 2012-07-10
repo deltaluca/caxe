@@ -47,3 +47,8 @@ error := %{ retval = new Token(tNoise,%); %}
 ~/method/~ := %{ retval = new Token(tMethod); %}
 
 11 : ~/!![^\r\n]*/~ := %{ retval = new Token(tDoc,%.substr(2)); %}
+
+// flashdevelop has... issues with #end and code hints.
+// we lex #end as a seperate token so that newline can be inserted in output
+// (abuse tDoc token for this)
+~/#end/~ := %{ retval = new Token(tDoc,"#end"); %}
