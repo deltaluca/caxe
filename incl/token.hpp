@@ -7,7 +7,7 @@ enum TOKID {
 	tIdent,tString,tRegExp,tInteger,tFloater,
 	tMScope,tMBrack,
 	tLBrace, tRBrace, tLParen, tRParen, tComma,
-	tDot, tSemi, tArrow, tSlash, tDollar, tLSlash,
+	tDot, tSemi, tArrow, tSlash, tDollar,
 	tCons,
 	tPackage, tImport, tDefine, tMixin, tExpand, tStr,
 	tGlobal, tFile, tLocal, tObject, tMethod,
