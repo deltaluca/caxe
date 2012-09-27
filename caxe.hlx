@@ -28,6 +28,7 @@ error := %{ retval = new Token(tNoise,%); %}
 ~/\-\>/~ := %{ retval = new Token(tArrow);  %}
 ~/\//~   := %{ retval = new Token(tSlash);  %}
 ~/$/~    := %{ retval = new Token(tDollar); %}
+~/$\\/~  := %{ retval = new Token(tLSlash); %}
 
 ~/`/~ := %{ retval = new Token(tCons); %}
 

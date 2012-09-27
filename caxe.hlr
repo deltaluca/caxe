@@ -4,7 +4,7 @@
 %token IDENT STRING REGEXP INTEGER FLOATER
 %token MSCOPE MBRACK
 %token LBRACE RBRACE LPAREN RPAREN COMMA
-%token DOT SEMI ARROW SLASH DOLL
+%token DOT SEMI ARROW SLASH DOLL LSLASH
 %token CONS
 %token PACKAGE IMPORT DEFINE MIXIN EXPAND STR
 %token GLOBAL FILE LOCAL OBJECT METHOD
@@ -110,6 +110,7 @@
 
     | DOLL DOLL %{ retval = StateNoise(" "); %}
     | DOLL %{ retval = StateNoise("$"); %}
+    | LSLASH %{ retval = StateNoise("\\"); %}
     | DOLL ident %{
         States list;
         list.push_back(ptr<State>(StateSymbol(*%1)));
