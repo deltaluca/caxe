@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 //#include <direct.h>
+#include <unistd.h>
 
 bool isFile(const std::string& path) {
     std::ifstream test;
