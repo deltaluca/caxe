@@ -1,4 +1,4 @@
-#define MAXARG 10
+#define MAXARG 20
 
 #ifndef MACRO_HPP
 #define MACRO_HPP

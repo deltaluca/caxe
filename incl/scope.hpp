@@ -41,7 +41,7 @@ struct Scope {
     bool isglobal;
 
     bool hasrestricts;
-    std::unordered_set</*Symbol*/int> restricts[10];
+    std::unordered_set</*Symbol*/int> restricts[MAXARG];
 
     bool nobrace;
     bool virtuals;
